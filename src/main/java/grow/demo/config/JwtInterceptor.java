@@ -1,7 +1,7 @@
 package grow.demo.config;
 
 
-import grow.demo.account.service.JwtService;
+import grow.demo.account.service.authorization.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

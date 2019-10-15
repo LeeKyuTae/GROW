@@ -1,4 +1,4 @@
-package grow.demo.account.service;
+package grow.demo.account.service.authorization;
 
 
 import grow.demo.config.UnauthorizedException;
