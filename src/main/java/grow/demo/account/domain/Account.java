@@ -38,5 +38,5 @@ public class Account {
     private String birth;
 
     @Column(name = "kakao_access_id", nullable = false)
-    private Long kakaoid;
+    private Long kakaoId;
 }
