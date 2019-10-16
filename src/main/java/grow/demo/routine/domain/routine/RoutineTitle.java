@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class RoutineTitle {
 
     @Id
@@ -25,5 +26,6 @@ public class RoutineTitle {
 
 
     @OneToMany
+    @JoinColumn(name = "routine_details_id")
     List<RoutineDetails> routineDetailsList;
 }

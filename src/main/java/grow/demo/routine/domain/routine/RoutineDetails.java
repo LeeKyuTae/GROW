@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class RoutineDetails {
 
     @Id
@@ -22,5 +23,10 @@ public class RoutineDetails {
     private Long routineDetailsId;
 
     @OneToMany
+    @JoinColumn(name = "exercise_id")
     List<Exercise> exerciseList;
+
+    @OneToMany
+    @JoinColumn(name = "set_id")
+    List<RoutineSet> routineSetList;
 }

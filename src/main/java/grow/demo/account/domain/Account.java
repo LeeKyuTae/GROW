@@ -1,12 +1,15 @@
 package grow.demo.account.domain;
 
 
+import grow.demo.routine.domain.routine.RoutineSet;
+import grow.demo.routine.domain.routine.RoutineTitle;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,4 +42,13 @@ public class Account {
 
     @Column(name = "kakao_access_id", nullable = false)
     private Long kakaoId;
+
+
+    @OneToMany
+    @JoinColumn(name = "set_id")
+    List<RoutineSet> routineSetList;
+
+    @OneToMany
+    @JoinColumn(name = "routine_title_id")
+    List<RoutineTitle> routineTitleList;
 }

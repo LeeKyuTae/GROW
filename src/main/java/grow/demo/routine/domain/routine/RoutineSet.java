@@ -1,20 +1,20 @@
 package grow.demo.routine.domain.routine;
 
 
+import grow.demo.account.domain.Account;
+import grow.demo.routine.domain.exercise.Exercise;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class RoutineSet {
 
     @Id
@@ -22,14 +22,9 @@ public class RoutineSet {
     @Column(name = "set_id")
     private Long setId;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    @Column(name = "routine_details_id")
-    private Long routineDetailsId;
-
-    @Column(name = "exercise_id")
-    private Long exerciseId;
+    @OneToOne
+    @JoinColumn(name = "exercise_id")
+    Exercise exercise;
 
     @Column(name = "lap", nullable = false)
     private Integer Lap;

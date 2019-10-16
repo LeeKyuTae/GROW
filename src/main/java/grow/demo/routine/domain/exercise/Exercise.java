@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
+@Entity
 @Getter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Exercise {
