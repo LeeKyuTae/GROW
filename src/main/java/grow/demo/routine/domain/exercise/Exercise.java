@@ -1,12 +1,15 @@
 package grow.demo.routine.domain.exercise;
 
 
+import grow.demo.routine.domain.routine.Routine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -36,4 +39,8 @@ public class Exercise {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "exercise_tools", nullable = false)
     private Set<ExerciseTool> exerciseTools;
+
+
+    @ManyToMany(mappedBy = "exerciseList")
+    private List<Routine> routineList = new ArrayList<>();
 }
