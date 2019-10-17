@@ -15,24 +15,24 @@ import java.util.Set;
 public class Exercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "exercise_id")
     private Long exerciseId;
 
     @Column(name = "exercise_name")
     private String exerciseName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(value = EnumType.STRING)
     @Column(name = "exercise_partials", nullable = false)
     private Set<ExercisePartial> exercisePartials;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(value = EnumType.STRING)
     @Column(name = "exercise_motions", nullable = false)
     private Set<ExerciseMotion> exerciseMotions;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(value = EnumType.STRING)
     @Column(name = "exercise_tools", nullable = false)
     private Set<ExerciseTool> exerciseTools;

@@ -18,15 +18,15 @@ import java.util.List;
 public class RoutineDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "routine_details_id")
     private Long routineDetailsId;
 
-    @OneToMany
+    @OneToMany(mappedBy = "exercise")
     @JoinColumn(name = "exercise_id")
     List<Exercise> exerciseList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "routine_set")
     @JoinColumn(name = "set_id")
     List<RoutineSet> routineSetList;
 }

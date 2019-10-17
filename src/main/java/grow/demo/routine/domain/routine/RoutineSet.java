@@ -18,11 +18,11 @@ import javax.persistence.*;
 public class RoutineSet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "set_id")
     private Long setId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "exercise_id")
     Exercise exercise;
 
