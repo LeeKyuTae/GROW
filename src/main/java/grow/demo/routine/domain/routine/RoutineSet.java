@@ -22,19 +22,23 @@ public class RoutineSet {
     @Column(name = "set_id")
     private Long setId;
 
-    @ManyToOne
-    @JoinColumn(name = "exercise_id")
-    Exercise exercise;
+    @Column(name = "laps", nullable = false)
+    private Integer laps;
 
-    @Column(name = "lap", nullable = false)
-    private Integer Lap;
-
-    @Column(name = "repeat", nullable = false)
-    private Integer Repeat;
+    @Column(name = "repeats", nullable = false)
+    private Integer repeats;
 
     @Column(name = "weight", nullable = false)
     private Float weight;
 
     @Column(name = "rest_time", nullable = true)
     private Integer restTime;
+
+    @ManyToOne
+    @JoinColumn(name = "exercise_id")
+    Exercise exercise;
+
+    @ManyToOne
+    @JoinColumn(name = "routine_id")
+    Routine routine;
 }
