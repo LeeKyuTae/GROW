@@ -41,4 +41,8 @@ public class RoutineSet {
     @ManyToOne
     @JoinColumn(name = "routine_id")
     Routine routine;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    Account account;
 }

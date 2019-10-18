@@ -45,8 +45,7 @@ public class Account {
     private Long kakaoId;
 
 
-    @OneToMany
-    @JoinColumn(name = "account_id")
+    @OneToMany(mappedBy = "account")
     private List<RoutineSet> routineSets = new ArrayList<>();
 
     @ManyToMany
