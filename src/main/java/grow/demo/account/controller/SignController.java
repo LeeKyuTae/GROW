@@ -2,6 +2,8 @@ package grow.demo.account.controller;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import grow.demo.account.domain.Account;
+import grow.demo.account.dto.AccountResource;
 import grow.demo.account.dto.KakaoAccessToken;
 import grow.demo.account.service.authorization.JwtService;
 import grow.demo.account.service.authorization.KakaoService;
@@ -59,7 +61,8 @@ public class SignController {
         }
          */
         //JWT Toeken 발급
-        String jwtToken = jwtService.generateToken(kakaoId);
+        Account account = accountService.getAccountByKakaoID(kakaoId);
+        String jwtToken = jwtService.generateToken(account.getId());
         System.out.println("JWT: " + jwtToken);
         //   response.addHeader(HEADER_AUTH, jwtToken);
 
@@ -72,6 +75,8 @@ public class SignController {
         AccountResource accountResource = new AccountResource(account);
 
          */
+        //Set Account Resource
+        AccountResource accountResource = new AccountResource(accountService.getAccountDto(account));
         return ResponseEntity.ok().headers(responseHeaders).body(accountResource);
     }
 }

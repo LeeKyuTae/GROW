@@ -48,7 +48,7 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<RoutineSet> routineSets = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="account_routinecollection",
                 joinColumns = @JoinColumn(name = "account_id"),
                 inverseJoinColumns = @JoinColumn(name = "routine_collection_id"))
