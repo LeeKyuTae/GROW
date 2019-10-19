@@ -39,17 +39,15 @@ public class RoutineService {
         Routine routine = routineRepository.findById(routineDto.getRoutineId()).get();
         Exercise exercise = exerciseRepository.findById(exerciseId).get();
         List<Exercise> exerciseList = routine.getExerciseList();
-        if(exerciseList.contains(exercise)){
-            throw new ExistExerciseException(exercise.getExerciseName());
-        }
-
-        if(exerciseList.isEmpty()){
+        if(exerciseList == null) {
             exerciseList = new ArrayList<>();
-            exerciseList.add(exercise);
             routine.builder().exerciseList(exerciseList).build();
-        }else{
-            exerciseList.add(exercise);
         }
+        else if(exerciseList.contains(exercise)){
+            throw new ExistExerciseException(exercise.getExerciseName(), routine.getRoutineName());
+        }
+        exerciseList.add(exercise);
+
         return routineDtoByRoutine(routine);
     }
 
@@ -59,7 +57,7 @@ public class RoutineService {
         List<Exercise> exerciseList = routine.getExerciseList();
 
         if(!exerciseList.contains(exercise)){
-            throw new NotExistExerciseException(exercise.getExerciseName());
+            throw new NotExistExerciseException(exercise.getExerciseName(), routine.getRoutineName());
         }
         exerciseList.remove(exercise);
         return routineDtoByRoutine(routine);
