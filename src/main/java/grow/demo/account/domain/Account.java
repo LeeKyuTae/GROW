@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -41,12 +42,20 @@ public class Account {
     @Column(name = "account_birth", nullable = false)
     private String birth;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "account_roles")
+    private Set<AccountRole> accountRoles;
+
+
     @Column(name = "kakao_access_id", nullable = false)
     private Long kakaoId;
 
 
     @OneToMany(mappedBy = "account")
     private List<RoutineSet> routineSets = new ArrayList<>();
+
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="account_routinecollection",

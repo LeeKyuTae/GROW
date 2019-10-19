@@ -2,6 +2,7 @@ package grow.demo.routine.dto;
 
 
 import grow.demo.routine.domain.exercise.Exercise;
+import grow.demo.routine.domain.routine.RoutineCollection;
 import lombok.*;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public class RoutineDto {
     private String routineName;
 
     private List<Exercise> exerciseList ;
+
+    private RoutineCollection routineCollection;
 }

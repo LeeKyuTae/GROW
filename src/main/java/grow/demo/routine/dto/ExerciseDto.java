@@ -14,6 +14,8 @@ import java.util.Set;
 @AllArgsConstructor @NoArgsConstructor
 public class ExerciseDto {
 
+    private Long exerciseId;
+
     private String exerciseName;
 
     private Set<ExercisePartial> exercisePartials;

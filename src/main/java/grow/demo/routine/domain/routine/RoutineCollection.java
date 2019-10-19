@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -25,6 +26,9 @@ public class RoutineCollection {
     @Column(name = "routine_collection_name")
     private String routineName;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "collection_role")
+    private RoutineCollectionRole collectionRole;
 
     @OneToMany(mappedBy ="routineCollection", cascade = CascadeType.ALL)
     List<Routine> routineList = new ArrayList<>();
