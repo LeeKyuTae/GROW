@@ -31,4 +31,29 @@ public class RoutineCategory {
 
     @OneToMany(mappedBy ="routineCategory", cascade = CascadeType.ALL)
     List<Routine> routineList = new ArrayList<>();
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+
+
+        if(this.getClass() != obj.getClass())
+            return false;
+
+
+        if(this.getCategoryId() == null && ((RoutineCategory) obj).getCategoryId() != null)
+            return false;
+
+
+        if(((RoutineCategory) obj).getCategoryId() == null)
+            return false;
+
+
+        if(this.getCategoryId().equals(((RoutineCategory) obj).getCategoryId()))
+            return true;
+
+        return false;
+    }
 }

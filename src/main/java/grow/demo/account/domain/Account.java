@@ -62,4 +62,28 @@ public class Account {
                 joinColumns = @JoinColumn(name = "account_id"),
                 inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<RoutineCategory> routineCategoryList = new ArrayList<>();
+
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+
+        if(this.getClass() != obj.getClass())
+            return false;
+
+        if(this.getId() == null && ((Account) obj).getId() != null)
+            return false;
+
+
+        if(((Account) obj).getId() == null)
+            return false;
+
+        if(this.getId().equals(((Account) obj).getId()))
+            return true;
+
+        return false;
+    }
 }

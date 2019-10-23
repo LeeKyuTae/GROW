@@ -37,4 +37,28 @@ public class Routine {
                 inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private List<Exercise> exerciseList = new ArrayList<>();
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+
+
+        if(this.getClass() != obj.getClass())
+            return false;
+
+
+        if(this.getRoutineId() == null && ((Routine) obj).getRoutineId() != null)
+            return false;
+
+
+        if(((Routine) obj).getRoutineId() == null)
+            return false;
+
+
+        if(this.getRoutineId().equals(((Routine) obj).getRoutineId()))
+            return true;
+
+        return false;
+    }
 }

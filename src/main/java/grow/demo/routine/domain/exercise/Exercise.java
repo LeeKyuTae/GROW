@@ -44,5 +44,27 @@ public class Exercise {
     private List<Routine> routineList = new ArrayList<>();
 
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
 
+
+        if(this.getClass() != obj.getClass())
+            return false;
+
+
+        if(this.getExerciseId() == null && ((Exercise) obj).getExerciseId() != null)
+            return false;
+
+
+        if(((Exercise) obj).getExerciseId() == null)
+            return false;
+
+
+        if(this.getExerciseId().equals(((Exercise) obj).getExerciseId()))
+            return true;
+
+        return false;
+    }
 }

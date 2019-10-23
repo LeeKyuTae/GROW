@@ -45,4 +45,29 @@ public class SetInfo {
     @ManyToOne
     @JoinColumn(name = "account_id")
     Account account;
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+
+        if(this.getClass() != obj.getClass())
+            return false;
+
+        if(this.getSetId() == null && ((SetInfo) obj).getSetId() != null)
+            return false;
+
+
+        if(((SetInfo) obj).getSetId() == null)
+            return false;
+
+        if(this.getSetId().equals(((SetInfo) obj).getSetId()))
+            return true;
+
+        return false;
+    }
+
+
 }
