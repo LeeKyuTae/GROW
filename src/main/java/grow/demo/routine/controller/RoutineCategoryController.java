@@ -5,6 +5,7 @@ import grow.demo.routine.domain.routine.RoutineCategoryType;
 import grow.demo.routine.dto.RoutineCategoryDto;
 import grow.demo.routine.service.RoutineCategoryService;
 import grow.demo.routine.service.RoutineService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -39,8 +40,16 @@ public class RoutineCategoryController {
 
 
 
-        RoutineCategoryDto.CategoryResponse routineCategoryDtos = routineCategoryService.registerRoutineCategory(routineCategoryDto);
-        return ResponseEntity.ok(routineCategoryDtos);
+        RoutineCategoryDto.CategoryResponse response = routineCategoryService.registerRoutineCategory(routineCategoryDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addRoutine")
+    public ResponseEntity addRoutineToCategory(@RequestBody RoutineCategoryDto.RoutineRequest routineRequest, Errors error) throws NotFoundException {
+        RoutineCategoryDto.CategoryResponse response = routineCategoryService.addRoutine(routineRequest);
+
+
+        return ResponseEntity.ok(response);
     }
 
 }
