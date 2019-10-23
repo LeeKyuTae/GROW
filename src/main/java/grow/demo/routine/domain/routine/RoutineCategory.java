@@ -9,27 +9,26 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RoutineCollection {
+public class RoutineCategory {
 
     @Id
     @GeneratedValue
-    @Column(name = "routine_collection_id")
-    private Long collectionId;
+    @Column(name = "category_id")
+    private Long categoryId;
 
-    @Column(name = "routine_collection_name")
-    private String routineName;
+    @Column(name = "category_name")
+    private String categoryName;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "collection_role")
-    private RoutineCollectionRole collectionRole;
+    @Column(name = "category_type")
+    private RoutineCategoryType collectionType;
 
-    @OneToMany(mappedBy ="routineCollection", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="routineCategory", cascade = CascadeType.ALL)
     List<Routine> routineList = new ArrayList<>();
 }

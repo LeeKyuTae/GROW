@@ -15,18 +15,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RoutineSet {
+public class SetInfo {
 
     @Id
     @GeneratedValue
     @Column(name = "set_id")
     private Long setId;
 
-    @Column(name = "laps", nullable = false)
-    private Integer laps;
+    @Column(name = "set_number", nullable = false)
+    private Integer setNumber;
 
-    @Column(name = "repeats", nullable = false)
-    private Integer repeats;
+    @Column(name = "reps", nullable = false)
+    private Integer reps;
 
     @Column(name = "weight", nullable = false)
     private Float weight;
