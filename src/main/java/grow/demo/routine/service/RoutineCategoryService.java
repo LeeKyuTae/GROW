@@ -37,11 +37,9 @@ public class RoutineCategoryService {
         return responseByRoutineCategory(routineCategory);
     }
 
-    public RoutineCategoryDto.CategoryResponse addRoutineToCategory(Long collectionId, Long routineId) throws NotFoundException {
-        Routine routine = routineRepository.findById(routineId).orElseThrow(() ->  new NotFoundException("존재하지 않는 루틴입니다."));
-        RoutineCategory routineCategory = routineCollectionRepository.findById(collectionId).orElseThrow(() ->  new NotFoundException("존재하지 않는 루틴카테고리입니다."));
-
-
+    public RoutineCategoryDto.CategoryResponse addRoutine(RoutineCategoryDto.RoutineRequest request) throws NotFoundException {
+        Routine routine = routineRepository.findById(request.getCategoryId()).orElseThrow(() ->  new NotFoundException("존재하지 않는 루틴입니다."));
+        RoutineCategory routineCategory = routineCollectionRepository.findById(request.getRoutineId()).orElseThrow(() ->  new NotFoundException("존재하지 않는 루틴카테고리입니다."));
 
         List<Routine>  routineList = routineCategory.getRoutineList();
         if(routineList == null){
