@@ -8,14 +8,14 @@ public class RoutineDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineInfoRequest {
         private Long category_id;
     }
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineInfoResponse {
         private Long routineId;
         private String routineName;
@@ -24,14 +24,14 @@ public class RoutineDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
         private String routineName;
     }
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class ExerciseRequest {
         private Long routineId;
 

@@ -50,6 +50,7 @@ public class Exercise {
             return false;
 
 
+
         if(this.getClass() != obj.getClass())
             return false;
 

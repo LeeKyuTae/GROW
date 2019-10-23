@@ -9,7 +9,7 @@ public class RoutineCategoryDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class MyCategoryRequest {
 
         //user ID
@@ -18,7 +18,7 @@ public class RoutineCategoryDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     //줄때는 이걸 List로 묶어서 보내주기
     public static class CategoryResponse {
 
@@ -31,7 +31,7 @@ public class RoutineCategoryDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
         private RoutineCategoryType routineCategoryType;
 
@@ -40,8 +40,8 @@ public class RoutineCategoryDto {
 
     @Getter
     @Builder
-    @Setter
-    public static class AddRoutineRequest {
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class RoutineRequest {
         private Long categoryId;
 
         private Long routineId;

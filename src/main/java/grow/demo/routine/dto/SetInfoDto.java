@@ -9,7 +9,7 @@ public class SetInfoDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class SetInfoRequest {
 
         //userId
@@ -22,7 +22,7 @@ public class SetInfoDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     //List형태로
     public static class SetInfoResponse {
 
@@ -37,7 +37,7 @@ public class SetInfoDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
 
         private Integer setNumber;

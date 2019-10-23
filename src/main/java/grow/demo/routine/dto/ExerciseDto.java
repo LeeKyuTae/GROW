@@ -12,14 +12,14 @@ import java.util.Set;
 public class ExerciseDto {
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineExerciseRequest {
         private Long routineId;
     }
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class ExerciseResponse {
         private Long exerciseId;
 
@@ -34,7 +34,7 @@ public class ExerciseDto {
 
     @Getter
     @Builder
-    @Setter
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
 
         private String exerciseName;
