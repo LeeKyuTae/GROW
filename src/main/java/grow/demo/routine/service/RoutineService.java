@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional @AllArgsConstructor
@@ -23,12 +24,16 @@ public class RoutineService {
 
     private final ExerciseRepository exerciseRepository;
 
+    private final ExerciseService exerciseService;
+
 
     public Routine registerRoutine(RoutineDto routineDto){
+        List<Exercise> exerciseList = routineDto.getExerciseList().stream()
+                                                .map(exerciseDto -> exerciseRepository.findById(exerciseDto.getExerciseId()).get()).collect(Collectors.toList());
         Routine routine = Routine.builder()
                             .routineName(routineDto.getRoutineName())
-                            .exerciseList(routineDto.getExerciseList())
-                            .routineCollection(routineDto.getRoutineCollection())
+                            .exerciseList(exerciseList)
+                            .routineCategory(routineDto.getRoutineCollection())
                             .build()
                             ;
 
@@ -66,8 +71,8 @@ public class RoutineService {
     public RoutineDto routineDtoByRoutine(Routine routine){
         RoutineDto routineDto = RoutineDto.builder()
                 .routineId(routine.getRoutineId())
-                .exerciseList(routine.getExerciseList())
-                .routineCollection(routine.getRoutineCollection())
+                .exerciseList(routine.getExerciseList().stream().map( exercise -> exerciseService.exerciseDtoByExercise(exercise)).collect(Collectors.toList()))
+                .routineCollection(routine.getRoutineCategory())
                 .routineName(routine.getRoutineName())
                 .build()
                 ;
