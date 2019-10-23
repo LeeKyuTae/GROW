@@ -5,10 +5,13 @@ import grow.demo.routine.domain.exercise.Exercise;
 import grow.demo.routine.domain.routine.Routine;
 import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.exception.ExistExerciseException;
+import grow.demo.routine.exception.ExistRoutineException;
 import grow.demo.routine.exception.NotExistExerciseException;
 import grow.demo.routine.repository.ExerciseRepository;
 import grow.demo.routine.repository.RoutineRepository;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,23 +29,21 @@ public class RoutineService {
 
     private final ExerciseService exerciseService;
 
+    private final ModelMapper modelMapper;
 
-    public Routine registerRoutine(RoutineDto routineDto){
-        List<Exercise> exerciseList = routineDto.getExerciseList().stream()
-                                                .map(exerciseDto -> exerciseRepository.findById(exerciseDto.getExerciseId()).get()).collect(Collectors.toList());
+
+    public RoutineDto.RoutineInfoResponse registerRoutine(RoutineDto.RegisterRequest routineDto){
         Routine routine = Routine.builder()
                             .routineName(routineDto.getRoutineName())
-                            .exerciseList(exerciseList)
-                            .routineCategory(routineDto.getRoutineCollection())
                             .build()
                             ;
-
-        return routineRepository.save(routine);
+        routine = routineRepository.save(routine);
+        return ResponseByRoutine(routine);
     }
 
-    public RoutineDto addExercise(RoutineDto routineDto, Long exerciseId){
-        Routine routine = routineRepository.findById(routineDto.getRoutineId()).get();
-        Exercise exercise = exerciseRepository.findById(exerciseId).get();
+    public RoutineDto.RoutineInfoResponse addExercise(RoutineDto.ExerciseRequest routineDto) throws NotFoundException {
+        Routine routine = routineRepository.findById(routineDto.getRoutineId()).orElseThrow(()-> new NotFoundException("존재하지 않는 루틴입니다."));
+        Exercise exercise = exerciseRepository.findById(routineDto.getExerciseId()).orElseThrow(() -> new NotExistExerciseException());
         List<Exercise> exerciseList = routine.getExerciseList();
         if(exerciseList == null) {
             exerciseList = new ArrayList<>();
@@ -53,29 +54,26 @@ public class RoutineService {
         }
         exerciseList.add(exercise);
 
-        return routineDtoByRoutine(routine);
+        return ResponseByRoutine(routine);
     }
 
-    public RoutineDto deleteExercise(RoutineDto routineDto, Long exerciseId){
-        Routine routine = routineRepository.findById(routineDto.getRoutineId()).get();
-        Exercise exercise = exerciseRepository.findById(exerciseId).get();
+    public RoutineDto.RoutineInfoResponse deleteExercise(RoutineDto.ExerciseRequest routineDto) throws NotFoundException {
+        Routine routine = routineRepository.findById(routineDto.getRoutineId()).orElseThrow(()-> new NotFoundException("존재하지 않는 루틴입니다."));
+        Exercise exercise = exerciseRepository.findById(routineDto.getExerciseId()).orElseThrow(() -> new NotExistExerciseException());
         List<Exercise> exerciseList = routine.getExerciseList();
+        if(exerciseList == null) {
+            throw new NotExistExerciseException();
+        }
 
         if(!exerciseList.contains(exercise)){
             throw new NotExistExerciseException(exercise.getExerciseName(), routine.getRoutineName());
         }
         exerciseList.remove(exercise);
-        return routineDtoByRoutine(routine);
+        return ResponseByRoutine(routine);
     }
 
-    public RoutineDto routineDtoByRoutine(Routine routine){
-        RoutineDto routineDto = RoutineDto.builder()
-                .routineId(routine.getRoutineId())
-                .exerciseList(routine.getExerciseList().stream().map( exercise -> exerciseService.exerciseDtoByExercise(exercise)).collect(Collectors.toList()))
-                .routineCollection(routine.getRoutineCategory())
-                .routineName(routine.getRoutineName())
-                .build()
-                ;
-        return routineDto;
+    public RoutineDto.RoutineInfoResponse ResponseByRoutine(Routine routine){
+        RoutineDto.RoutineInfoResponse response = modelMapper.map(routine, RoutineDto.RoutineInfoResponse.class);
+        return response;
     }
 }

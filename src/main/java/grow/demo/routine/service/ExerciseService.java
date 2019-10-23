@@ -7,10 +7,9 @@ import grow.demo.routine.exception.ExistExerciseException;
 import grow.demo.routine.exception.NotExistExerciseException;
 import grow.demo.routine.repository.ExerciseRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Transactional
 @AllArgsConstructor
@@ -18,7 +17,9 @@ import java.util.Optional;
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
 
-    public ExerciseDto registerExercise(ExerciseDto exerciseDto){
+    private final ModelMapper modelMapper;
+
+    public ExerciseDto.ExerciseResponse registerExercise(ExerciseDto.RegisterRequest exerciseDto){
         Exercise exercise = Exercise.builder()
                                     .exerciseMotions(exerciseDto.getExerciseMotions())
                                     .exercisePartials(exerciseDto.getExercisePartials())
@@ -32,26 +33,18 @@ public class ExerciseService {
         }
 
         exercise = exerciseRepository.save(exercise);
-        return exerciseDtoByExercise(exercise);
+        return ResponseByExercise(exercise);
     }
 
-    public ExerciseDto exerciseDtoByExercise(Exercise exercise){
-         ExerciseDto exerciseDto = ExerciseDto.builder()
-                                        .exerciseId(exercise.getExerciseId())
-                                        .exerciseName(exercise.getExerciseName())
-                                        .exerciseMotions(exercise.getExerciseMotions())
-                                        .exercisePartials(exercise.getExercisePartials())
-                                        .exerciseTools(exercise.getExerciseTool())
-                                        .build()
-                                        ;
-         return exerciseDto;
+    public Exercise getExercise(Long exerciseId){
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                                            .orElseThrow(() -> new NotExistExerciseException());
+
+        return exercise;
     }
 
-    public ExerciseDto getExercise(Long exerciseId){
-        Optional<Exercise> exerciseOptional = exerciseRepository.findById(exerciseId);
-        if(!exerciseOptional.isPresent())
-            throw new NotExistExerciseException();
-
-        return exerciseDtoByExercise(exerciseOptional.get());
+    public ExerciseDto.ExerciseResponse ResponseByExercise(Exercise exercise){
+        ExerciseDto.ExerciseResponse exerciseRegisterResponse = modelMapper.map(exercise, ExerciseDto.ExerciseResponse.class);
+        return exerciseRegisterResponse;
     }
 }
