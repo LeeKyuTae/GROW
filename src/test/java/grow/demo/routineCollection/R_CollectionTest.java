@@ -2,14 +2,12 @@ package grow.demo.routineCollection;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import grow.demo.routine.domain.exercise.Exercise;
 import grow.demo.routine.domain.exercise.ExerciseMotion;
 import grow.demo.routine.domain.exercise.ExercisePartial;
 import grow.demo.routine.domain.exercise.ExerciseTool;
 import grow.demo.routine.dto.ExerciseDto;
-import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.service.ExerciseService;
-import grow.demo.routine.service.RoutineCollectionService;
+import grow.demo.routine.service.RoutineCategoryService;
 import grow.demo.routine.service.RoutineService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,11 +41,11 @@ public class R_CollectionTest {
     private RoutineService routineService;
 
     @Autowired
-    private RoutineCollectionService routineCollectionService;
+    private RoutineCategoryService routineCategoryService;
 
     @Test
     public void createExercise() {
-        ExerciseDto exerciseDto = ExerciseDto.builder()
+        ExerciseDto.RegisterRequest exerciseDto = ExerciseDto.RegisterRequest.builder()
                                     .exerciseName("벤치 프레스")
                                     .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Press)))
                                     .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Chest)))
@@ -58,7 +54,7 @@ public class R_CollectionTest {
                                     ;
         exerciseService.registerExercise(exerciseDto);
 
-        ExerciseDto exerciseDto2 = ExerciseDto.builder()
+        ExerciseDto.RegisterRequest exerciseDto2 = ExerciseDto.RegisterRequest.builder()
                 .exerciseName("스쿼트")
                 .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Squat)))
                 .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Leg)))
@@ -67,7 +63,7 @@ public class R_CollectionTest {
                 ;
         exerciseService.registerExercise(exerciseDto2);
 
-        ExerciseDto exerciseDto3 = ExerciseDto.builder()
+        ExerciseDto.RegisterRequest exerciseDto3 = ExerciseDto.RegisterRequest.builder()
                 .exerciseName("데드 리프트")
                 .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Raise)))
                 .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Back)))
@@ -79,6 +75,7 @@ public class R_CollectionTest {
 
     @Test
     public void createRoutine(){
+        /*
         RoutineDto routineDto1 = RoutineDto.builder()
                                 .routineName("등")
                                 .build()
@@ -97,6 +94,8 @@ public class R_CollectionTest {
                 .build();
         routineService.registerRoutine(routineDto3);
 
+
+         */
 
 
 
