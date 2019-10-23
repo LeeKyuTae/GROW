@@ -22,7 +22,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String authorization_token =request.getHeader(HEADER_AUTH);
-        String  jwttoken = jwtService.generateToken(authorization_token);
+        String  jwttoken = jwtService.getJwtFromRequest(authorization_token);
         if(jwttoken != null && jwtService.validateToken(jwttoken)){
             return true;
         }else{
