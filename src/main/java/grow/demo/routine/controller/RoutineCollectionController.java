@@ -1,9 +1,8 @@
 package grow.demo.routine.controller;
 
 
-import grow.demo.routine.domain.routine.Routine;
-import grow.demo.routine.domain.routine.RoutineCollectionRole;
-import grow.demo.routine.dto.RoutineCollectionDto;
+import grow.demo.routine.domain.routine.RoutineCategoryType;
+import grow.demo.routine.dto.RoutineCategoryDto;
 import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.service.RoutineCollectionService;
 import grow.demo.routine.service.RoutineService;
@@ -25,19 +24,18 @@ public class RoutineCollectionController {
     private final RoutineService routineService;
 
     @PostMapping("/register")
-    public ResponseEntity registerRoutineCollection(@RequestBody RoutineCollectionDto routineCollectionDto, Errors error){
-        List<Routine> routineList = routineCollectionDto.getRoutineList();
+    public ResponseEntity registerRoutineCollection(@RequestBody RoutineCategoryDto routineCategoryDto, Errors error){
+        List<RoutineDto> routineList = routineCategoryDto.getRoutineList();
         if(routineList == null){
             routineList = new ArrayList<>();
         }else{
-            for(Routine routine : routineList){
-                RoutineDto routineDto = routineService.routineDtoByRoutine(routine);
+            for(RoutineDto routineDto : routineList){
                 routineService.registerRoutine(routineDto);
             }
         }
 
-        RoutineCollectionDto routineCollectionDtos = routineCollectionService.registerRoutineCollection(routineCollectionDto, RoutineCollectionRole.CUSTOM);
-        return ResponseEntity.ok(routineCollectionDtos);
+        RoutineCategoryDto routineCategoryDtos = routineCollectionService.registerRoutineCollection(routineCategoryDto, RoutineCategoryType.CUSTOM);
+        return ResponseEntity.ok(routineCategoryDtos);
     }
 
 }

@@ -1,11 +1,9 @@
 package grow.demo.account.dto;
 
 
-import grow.demo.routine.domain.routine.RoutineCollection;
+import grow.demo.routine.dto.RoutineCategoryDto;
 import lombok.*;
 
-import javax.persistence.Column;
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -20,5 +18,7 @@ public class AccountDto {
     private Float height;
     private String gender;
     private String birth;
-    private List<RoutineCollection> routineCollectionList;
+
+
+    private List<RoutineCategoryDto> routineCollectionList;
 }

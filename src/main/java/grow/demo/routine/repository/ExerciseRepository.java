@@ -9,5 +9,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     public List<Exercise> findByExerciseNameLike(String exerciseName);
 
-    public Boolean findByExerciseNameExists(String exerciseName);
+    public Boolean existsByExerciseName(String exerciseName);
 }

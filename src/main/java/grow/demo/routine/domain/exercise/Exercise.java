@@ -27,18 +27,17 @@ public class Exercise {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "exercise_partials", nullable = false)
+    @Column(name = "exercise_partials")
     private Set<ExercisePartial> exercisePartials;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "exercise_motions", nullable = false)
+    @Column(name = "exercise_motions")
     private Set<ExerciseMotion> exerciseMotions;
 
-    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "exercise_tools", nullable = false)
-    private Set<ExerciseTool> exerciseTools;
+    @Column(name = "exercise_tools")
+    private ExerciseTool exerciseTool;
 
 
     @ManyToMany(mappedBy = "exerciseList")

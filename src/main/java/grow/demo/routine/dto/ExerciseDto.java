@@ -8,20 +8,33 @@ import lombok.*;
 
 import java.util.Set;
 
-@Getter
-@Builder
-@Setter
-@AllArgsConstructor @NoArgsConstructor
+
 public class ExerciseDto {
 
-    private Long exerciseId;
 
-    private String exerciseName;
+    @Getter
+    @Builder
+    @Setter
+    public static class RoutineExerciseRequest {
+        private Long routineId;
+    }
 
-    private Set<ExercisePartial> exercisePartials;
 
-    private Set<ExerciseMotion> exerciseMotions;
+    @Getter
+    @Builder
+    @Setter
+    public static class RoutineExerciseResponse {
+        private Long exerciseId;
 
-    private Set<ExerciseTool> exerciseTools;
+        private String exerciseName;
+
+        private Set<ExercisePartial> exercisePartials;
+
+        private Set<ExerciseMotion> exerciseMotions;
+
+        private ExerciseTool exerciseTools;
+    }
+
+
 
 }

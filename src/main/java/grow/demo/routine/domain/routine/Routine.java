@@ -23,19 +23,18 @@ public class Routine {
     @Column(name = "routine_id")
     private Long routineId;
 
+
+    @Column(name = "routine_name")
     private String routineName;
 
     @ManyToOne
-    @JoinColumn(name = "routine_collection_id")
-    private RoutineCollection routineCollection;
+    @JoinColumn(name = "category_id")
+    private RoutineCategory routineCategory;
 
     @ManyToMany
     @JoinTable(name = "routine_exercise",
                 joinColumns = @JoinColumn(name = "routine_id"),
                 inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private List<Exercise> exerciseList = new ArrayList<>();
-
-
-
 
 }

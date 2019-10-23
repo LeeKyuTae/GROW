@@ -1,8 +1,8 @@
 package grow.demo.account.domain;
 
 
-import grow.demo.routine.domain.routine.RoutineSet;
-import grow.demo.routine.domain.routine.RoutineCollection;
+import grow.demo.routine.domain.routine.SetInfo;
+import grow.demo.routine.domain.routine.RoutineCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,13 +53,13 @@ public class Account {
 
 
     @OneToMany(mappedBy = "account")
-    private List<RoutineSet> routineSets = new ArrayList<>();
+    private List<SetInfo> setInfos = new ArrayList<>();
 
 
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name="account_routinecollection",
+    @JoinTable(name="account_routine_category",
                 joinColumns = @JoinColumn(name = "account_id"),
-                inverseJoinColumns = @JoinColumn(name = "routine_collection_id"))
-    private List<RoutineCollection> routineCollectionList = new ArrayList<>();
+                inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<RoutineCategory> routineCategoryList = new ArrayList<>();
 }
