@@ -6,9 +6,11 @@ import grow.demo.routine.domain.exercise.ExerciseMotion;
 import grow.demo.routine.domain.exercise.ExercisePartial;
 import grow.demo.routine.domain.exercise.ExerciseTool;
 import grow.demo.routine.dto.ExerciseDto;
+import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.service.ExerciseService;
 import grow.demo.routine.service.RoutineCategoryService;
 import grow.demo.routine.service.RoutineService;
+import javassist.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,28 @@ public class R_CollectionTest {
     }
 
     @Test
-    public void createRoutine(){
+    public void createRoutine() throws NotFoundException {
+        RoutineDto.RegisterRequest routineDto = RoutineDto.RegisterRequest.builder()
+                                                        .routineName("등1")
+                                                        .build()
+                                                        ;
+
+        RoutineDto.RoutineInfoResponse response = routineService.registerRoutine(routineDto);
+        RoutineDto.ExerciseRequest exerciseRequest = RoutineDto.ExerciseRequest.builder()
+                                                        .exerciseId(Long.valueOf(6))
+                                                        .routineId(response.getRoutineId())
+                                                        .build();
+
+        routineService.addExercise(exerciseRequest);
+
+        RoutineDto.RegisterRequest routineDto1 = RoutineDto.RegisterRequest.builder()
+                .routineName("가슴")
+                .build()
+                ;
+
+        routineService.registerRoutine(routineDto1);
+
+
         /*
         RoutineDto routineDto1 = RoutineDto.builder()
                                 .routineName("등")
