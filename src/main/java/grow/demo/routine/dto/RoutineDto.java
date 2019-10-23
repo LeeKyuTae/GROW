@@ -10,10 +10,8 @@ public class RoutineDto {
     @Builder
     @Setter
     public static class RoutineInfoRequest {
-
         private Long category_id;
     }
-
 
     @Getter
     @Builder
@@ -22,5 +20,23 @@ public class RoutineDto {
         private Long routineId;
         private String routineName;
     }
+
+
+    @Getter
+    @Builder
+    @Setter
+    public static class RegisterRequest {
+        private String routineName;
+    }
+
+    @Getter
+    @Builder
+    @Setter
+    public static class ExerciseRequest {
+        private Long routineId;
+
+        private Long exerciseId;
+    }
+
 
 }

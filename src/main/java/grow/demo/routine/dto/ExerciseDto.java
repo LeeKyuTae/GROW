@@ -10,8 +10,6 @@ import java.util.Set;
 
 
 public class ExerciseDto {
-
-
     @Getter
     @Builder
     @Setter
@@ -19,11 +17,10 @@ public class ExerciseDto {
         private Long routineId;
     }
 
-
     @Getter
     @Builder
     @Setter
-    public static class RoutineExerciseResponse {
+    public static class ExerciseResponse {
         private Long exerciseId;
 
         private String exerciseName;
@@ -35,6 +32,15 @@ public class ExerciseDto {
         private ExerciseTool exerciseTools;
     }
 
+    @Getter
+    @Builder
+    @Setter
+    public static class RegisterRequest {
 
+        private String exerciseName;
+        private Set<ExercisePartial> exercisePartials;
+        private Set<ExerciseMotion> exerciseMotions;
+        private ExerciseTool exerciseTools;
+    }
 
 }

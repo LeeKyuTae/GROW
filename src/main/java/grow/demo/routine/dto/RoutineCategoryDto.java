@@ -7,7 +7,6 @@ import lombok.*;
 
 public class RoutineCategoryDto {
 
-
     @Getter
     @Builder
     @Setter
@@ -16,8 +15,6 @@ public class RoutineCategoryDto {
         //user ID
         private RoutineCategoryType routineCategoryType;
     }
-
-
 
     @Getter
     @Builder
@@ -32,7 +29,23 @@ public class RoutineCategoryDto {
         private String categoryName;
     }
 
+    @Getter
+    @Builder
+    @Setter
+    public static class RegisterRequest {
+        private RoutineCategoryType routineCategoryType;
 
+        private String categoryName;
+    }
+
+    @Getter
+    @Builder
+    @Setter
+    public static class AddRoutineRequest {
+        private Long categoryId;
+
+        private Long routineId;
+    }
 
 
 

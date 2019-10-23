@@ -35,4 +35,23 @@ public class SetInfoDto {
         private Integer restTime;
     }
 
+    @Getter
+    @Builder
+    @Setter
+    public static class RegisterRequest {
+
+        private Integer setNumber;
+
+        private Integer reps;
+
+        private Float weight;
+
+        private Integer restTime;
+
+        private Long routineId;
+
+        private Long exerciseId;
+
+    }
+
 }
