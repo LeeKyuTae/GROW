@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import grow.demo.routine.domain.exercise.ExerciseMotion;
 import grow.demo.routine.domain.exercise.ExercisePartial;
 import grow.demo.routine.domain.exercise.ExerciseTool;
+import grow.demo.routine.domain.routine.RoutineCategoryType;
 import grow.demo.routine.dto.ExerciseDto;
+import grow.demo.routine.dto.RoutineCategoryDto;
 import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.service.ExerciseService;
 import grow.demo.routine.service.RoutineCategoryService;
@@ -20,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -119,7 +122,16 @@ public class R_CollectionTest {
 
 
          */
+    }
 
+    @Test
+    public void createCategory() throws NotFoundException, SQLException {
+        RoutineCategoryDto.RegisterRequest registerRequest = RoutineCategoryDto.RegisterRequest.builder()
+                                                                            .categoryName("명준이거말해봐")
+                                                                            .routineCategoryType(RoutineCategoryType.RECOMMEND)
+                                                                            .build()
+                                                                            ;
+        routineCategoryService.registerRoutineCategory(registerRequest);
 
 
     }
