@@ -73,7 +73,6 @@ public class SignController {
         // kakaoAccess_token.setJwt(jwtToken);
         Account account = accountService.getAccount(kakaoId);
         AccountResource accountResource = new AccountResource(account);
-
          */
         //Set Account Resource
         AccountResource accountResource = new AccountResource(accountService.getAccountDto(account));
