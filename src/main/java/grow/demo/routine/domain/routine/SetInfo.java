@@ -2,6 +2,7 @@ package grow.demo.routine.domain.routine;
 
 
 import grow.demo.account.domain.Account;
+import grow.demo.record.domain.Records;
 import grow.demo.routine.domain.exercise.Exercise;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,16 +37,15 @@ public class SetInfo {
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
-    Exercise exercise;
+    private Exercise exercise;
 
     @ManyToOne
     @JoinColumn(name = "routine_id")
-    Routine routine;
+    private Routine routine;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
-    Account account;
-
+    private Account account;
 
 
     @Override
