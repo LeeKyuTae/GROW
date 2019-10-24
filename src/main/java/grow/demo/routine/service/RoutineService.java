@@ -41,6 +41,24 @@ public class RoutineService {
         return ResponseByRoutine(routine);
     }
 
+    public RoutineDto.RoutineInfoResponse getRoutine(RoutineDto.RoutineInfoRequest request) throws NotFoundException {
+        Routine routine = routineRepository.findById(request.getRoutine_id()).orElseThrow(() -> new NotFoundException("존재하지 않는 루틴입니다."));
+        return ResponseByRoutine(routine);
+    }
+
+    public RoutineDto.RoutineListInfoResponse getRoutineByCategory(RoutineDto.RoutineListInfoRequest request) throws NotFoundException {
+        List<Routine> routineList = routineRepository.findByRoutineCategory_CategoryId(request.getCategory_id());
+        if(routineList == null){
+            throw new NotFoundException("해당 카테고리는 존재하지 않습니다.");
+        }
+        List<RoutineDto.RoutineInfoResponse> responsebody = new ArrayList<>();
+        for(Routine routine : routineList){
+            responsebody.add(ResponseByRoutine(routine));
+        }
+        RoutineDto.RoutineListInfoResponse response = RoutineDto.RoutineListInfoResponse.builder().responses(responsebody).build();
+        return response;
+    }
+
     public RoutineDto.RoutineInfoResponse addExercise(RoutineDto.ExerciseRequest routineDto) throws NotFoundException {
         Routine routine = routineRepository.findById(routineDto.getRoutineId()).orElseThrow(()-> new NotFoundException("존재하지 않는 루틴입니다."));
         Exercise exercise = exerciseRepository.findById(routineDto.getExerciseId()).orElseThrow(() -> new NotExistExerciseException());

@@ -1,6 +1,9 @@
 package grow.demo.routine.controller;
 
 
+import grow.demo.account.domain.Account;
+import grow.demo.account.service.authorization.JwtService;
+import grow.demo.routine.domain.routine.RoutineCategory;
 import grow.demo.routine.domain.routine.RoutineCategoryType;
 import grow.demo.routine.dto.RoutineCategoryDto;
 import grow.demo.routine.service.RoutineCategoryService;
@@ -9,20 +12,22 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.xml.ws.Response;
+import java.util.List;
 
 
 @AllArgsConstructor
-@RestController(value = "/routinCategory")
+@RestController
 public class RoutineCategoryController {
     private final RoutineCategoryService routineCategoryService;
     private final RoutineService routineService;
 
-    @PostMapping("/register")
-    public ResponseEntity registerRoutineCategory(@RequestBody RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error){
+    private final JwtService jwtService;
 
+    @PostMapping("/register/category")
+    public ResponseEntity registerRoutineCategory(@RequestBody RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error){
         /*
         List<RoutineDto> routineList = routineCategoryDto.getRoutineList();
         if(routineList == null){
@@ -34,7 +39,6 @@ public class RoutineCategoryController {
         }
 
          */
-
         RoutineCategoryType type = routineCategoryDto.getRoutineCategoryType();
         // 유저가 ADMIN이 아닌데 type이 RECOMMEND 일경우 -> BadRequest
 
@@ -44,7 +48,7 @@ public class RoutineCategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/addRoutine")
+    @PostMapping("/add/routine/category")
     public ResponseEntity addRoutineToCategory(@RequestBody RoutineCategoryDto.RoutineRequest routineRequest, Errors error) throws NotFoundException {
         RoutineCategoryDto.CategoryResponse response = routineCategoryService.addRoutine(routineRequest);
 
@@ -52,4 +56,17 @@ public class RoutineCategoryController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/get/category")
+    public ResponseEntity getRoutineCategory(@ModelAttribute RoutineCategoryDto.MyCategoryRequest request){
+        List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getAccountCategory(request, Long.valueOf(1));
+
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity getRoutineCategory(@PathVariable Long categoryId) throws NotFoundException {
+        RoutineCategoryDto.CategoryResponse response = routineCategoryService.getCategory(categoryId);
+        return ResponseEntity.ok(response);
+    }
 }

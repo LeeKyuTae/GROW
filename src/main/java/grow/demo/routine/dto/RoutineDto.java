@@ -3,14 +3,30 @@ package grow.demo.routine.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 
 public class RoutineDto {
 
     @Getter
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
-    public static class RoutineInfoRequest {
+    public static class RoutineListInfoRequest {
         private Long category_id;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class RoutineListInfoResponse {
+        private List<RoutineInfoResponse> responses;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class RoutineInfoRequest {
+        private Long routine_id;
     }
 
     @Getter

@@ -1,6 +1,7 @@
 package grow.demo.routine.domain.routine;
 
 
+import grow.demo.account.domain.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,11 +28,13 @@ public class RoutineCategory {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "category_type")
-    private RoutineCategoryType collectionType;
+    private RoutineCategoryType categoryType;
 
     @OneToMany(mappedBy ="routineCategory", cascade = CascadeType.ALL)
-    List<Routine> routineList = new ArrayList<>();
+    private List<Routine> routineList = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "routineCategoryList")
+    private List<Account> accountList = new ArrayList<>();
 
     @Override
     public boolean equals(Object obj) {
