@@ -27,7 +27,7 @@ public class JwtService {
     private String jwtSecret;
 
     @Value("${app.jwtExpirationInMs}")
-    private int jwtExpirationInMs;
+    private long jwtExpirationInMs;
 
     public String generateToken(Long accountId){
         Date now = new Date();
