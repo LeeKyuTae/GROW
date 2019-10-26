@@ -20,13 +20,14 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping(value = "/category")
 public class RoutineCategoryController {
     private final RoutineCategoryService routineCategoryService;
     private final RoutineService routineService;
 
     private final JwtService jwtService;
 
-    @PostMapping("/register/category")
+    @PostMapping
     public ResponseEntity registerRoutineCategory(@RequestBody RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error){
         /*
         List<RoutineDto> routineList = routineCategoryDto.getRoutineList();
@@ -48,7 +49,7 @@ public class RoutineCategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/add/routine/category")
+    @PostMapping("-routine")
     public ResponseEntity addRoutineToCategory(@RequestBody RoutineCategoryDto.RoutineRequest routineRequest, Errors error) throws NotFoundException {
         RoutineCategoryDto.CategoryResponse response = routineCategoryService.addRoutine(routineRequest);
 
@@ -56,7 +57,7 @@ public class RoutineCategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/get/category")
+    @GetMapping
     public ResponseEntity getRoutineCategory(@ModelAttribute RoutineCategoryDto.MyCategoryRequest request){
         List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getAccountCategory(request, Long.valueOf(1));
 
@@ -64,7 +65,7 @@ public class RoutineCategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getRoutineCategory(@PathVariable Long categoryId) throws NotFoundException {
         RoutineCategoryDto.CategoryResponse response = routineCategoryService.getCategory(categoryId);
         return ResponseEntity.ok(response);
