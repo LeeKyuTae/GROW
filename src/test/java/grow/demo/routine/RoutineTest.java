@@ -1,4 +1,6 @@
 package grow.demo.routine;
 
-public class RoutineTest {
+import grow.demo.common.BaseControllerTest;
+
+public class RoutineTest extends BaseControllerTest {
 }

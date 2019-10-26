@@ -1,4 +1,6 @@
 package grow.demo.routine;
 
-public class SetInfoTest {
+import grow.demo.common.BaseControllerTest;
+
+public class SetInfoTest extends BaseControllerTest {
 }
