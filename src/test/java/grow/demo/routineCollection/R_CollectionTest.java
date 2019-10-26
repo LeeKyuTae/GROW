@@ -87,7 +87,7 @@ public class R_CollectionTest {
 
         RoutineDto.RoutineInfoResponse response = routineService.registerRoutine(routineDto);
         RoutineDto.ExerciseRequest exerciseRequest = RoutineDto.ExerciseRequest.builder()
-                                                        .exerciseId(Long.valueOf(6))
+                                                        .exerciseId(Long.valueOf(1))
                                                         .routineId(response.getRoutineId())
                                                         .build();
 
