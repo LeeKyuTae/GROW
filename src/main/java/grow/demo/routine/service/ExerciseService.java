@@ -11,6 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Transactional
 @AllArgsConstructor
 @Service
@@ -36,11 +39,25 @@ public class ExerciseService {
         return ResponseByExercise(exercise);
     }
 
-    public Exercise getExercise(Long exerciseId){
+    public List<ExerciseDto.ExerciseResponse> getExerciseList(String exerciseNameLike){
+        List<Exercise> exerciseList = exerciseRepository.findByExerciseNameLike(exerciseNameLike);
+        if(exerciseList == null){
+            throw new NotExistExerciseException();
+        }
+        List<ExerciseDto.ExerciseResponse> responseList = new ArrayList<>();
+        for(Exercise exercise : exerciseList){
+            ExerciseDto.ExerciseResponse response = ResponseByExercise(exercise);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+
+    public ExerciseDto.ExerciseResponse getExercise(Long exerciseId){
         Exercise exercise = exerciseRepository.findById(exerciseId)
                                             .orElseThrow(() -> new NotExistExerciseException());
 
-        return exercise;
+        return ResponseByExercise(exercise);
     }
 
     public ExerciseDto.ExerciseResponse ResponseByExercise(Exercise exercise){
