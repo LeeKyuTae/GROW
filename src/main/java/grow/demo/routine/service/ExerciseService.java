@@ -27,7 +27,7 @@ public class ExerciseService {
                                     .exerciseMotions(exerciseDto.getExerciseMotions())
                                     .exercisePartials(exerciseDto.getExercisePartials())
                                     .exerciseName(exerciseDto.getExerciseName())
-                                    .exerciseTool(exerciseDto.getExerciseTools())
+                                    .exerciseTool(exerciseDto.getExerciseTool())
                                     .build()
                                     ;
 

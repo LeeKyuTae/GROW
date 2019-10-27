@@ -29,7 +29,7 @@ public class ExerciseDto {
 
         private Set<ExerciseMotion> exerciseMotions;
 
-        private ExerciseTool exerciseTools;
+        private ExerciseTool exerciseTool;
     }
 
     @Getter
@@ -40,7 +40,7 @@ public class ExerciseDto {
         private String exerciseName;
         private Set<ExercisePartial> exercisePartials;
         private Set<ExerciseMotion> exerciseMotions;
-        private ExerciseTool exerciseTools;
+        private ExerciseTool exerciseTool;
     }
 
 }

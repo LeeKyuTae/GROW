@@ -50,11 +50,12 @@ public class R_CollectionTest {
 
     @Test
     public void createExercise() {
+        /*
         ExerciseDto.RegisterRequest exerciseDto = ExerciseDto.RegisterRequest.builder()
                                     .exerciseName("벤치 프레스")
                                     .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Press)))
                                     .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Chest)))
-                                    .exerciseTools(ExerciseTool.Barbell)
+                                    .exerciseTool(ExerciseTool.Barbell)
                                     .build()
                                     ;
         exerciseService.registerExercise(exerciseDto);
@@ -63,7 +64,7 @@ public class R_CollectionTest {
                 .exerciseName("스쿼트")
                 .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Squat)))
                 .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Leg)))
-                .exerciseTools(ExerciseTool.Barbell)
+                .exerciseTool(ExerciseTool.Barbell)
                 .build()
                 ;
         exerciseService.registerExercise(exerciseDto2);
@@ -72,14 +73,17 @@ public class R_CollectionTest {
                 .exerciseName("데드 리프트")
                 .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Raise)))
                 .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Back)))
-                .exerciseTools(ExerciseTool.Barbell)
+                .exerciseTool(ExerciseTool.Barbell)
                 .build()
                 ;
         exerciseService.registerExercise(exerciseDto3);
+
+         */
     }
 
     @Test
     public void createRoutine() throws NotFoundException {
+        /*
         RoutineDto.RegisterRequest routineDto = RoutineDto.RegisterRequest.builder()
                                                         .routineName("등1")
                                                         .build()
@@ -100,7 +104,9 @@ public class R_CollectionTest {
 
         routineService.registerRoutine(routineDto1);
 
+         */
 
+     //======================================================위에가 돌아감
         /*
         RoutineDto routineDto1 = RoutineDto.builder()
                                 .routineName("등")

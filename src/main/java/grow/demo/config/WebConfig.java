@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     private static final String[] EXCLUDE_PATHS = {
             "/oauth/login/**", "/favicon.ico", "/", "/webapp/WEB-INF/views/index.jsp"
-            ,"/**/*.png", "/oauth/login/kakao" , "/category/**"
+            ,"/**/*.png", "/oauth/login/kakao" , "/category/**" , "/exercise/**"
     };
 
     private final JwtInterceptor jwtInterceptor;
