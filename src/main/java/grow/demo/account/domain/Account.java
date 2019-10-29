@@ -1,6 +1,7 @@
 package grow.demo.account.domain;
 
 
+import grow.demo.account.dto.AccountDto;
 import grow.demo.routine.domain.routine.SetInfo;
 import grow.demo.routine.domain.routine.RoutineCategory;
 import lombok.AllArgsConstructor;
@@ -24,22 +25,22 @@ public class Account {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(name = "account_email",unique = true, nullable = false)
+    @Column(name = "account_email",unique = true)
     private String userEmail;
 
-    @Column(name = "account_name",unique = true , nullable = false)
+    @Column(name = "account_name",unique = true)
     private String userName;
 
-    @Column(name = "account_weight", nullable = false)
+    @Column(name = "account_weight")
     private Float weight;
 
-    @Column(name = "account_height", nullable = false)
+    @Column(name = "account_height")
     private Float height;
 
-    @Column(name = "account_gender", nullable = false)
+    @Column(name = "account_gender")
     private String gender;
 
-    @Column(name = "account_birth", nullable = false)
+    @Column(name = "account_birth")
     private String birth;
 
     @ElementCollection(fetch = FetchType.LAZY)
@@ -48,7 +49,7 @@ public class Account {
     private Set<AccountRole> accountRoles;
 
 
-    @Column(name = "kakao_access_id", nullable = false)
+    @Column(name = "kakao_access_id")
     private Long kakaoId;
 
 
@@ -62,6 +63,19 @@ public class Account {
                 joinColumns = @JoinColumn(name = "account_id"),
                 inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<RoutineCategory> routineCategoryList = new ArrayList<>();
+
+    public void updateAccountInfo(AccountDto.AccountInfoUpdateRequest request){
+        this.birth = request.getBirth();
+        this.gender = request.getGender();
+        this.height = request.getHeight();
+        this.weight = request.getWeight();
+        this.userEmail = request.getUserEmail();
+        this.userName = request.getUserName();
+    }
+
+    public void updateWeight(AccountDto.WeightUpdateRequest request){
+        this.weight = request.getWeight();
+    }
 
 
 

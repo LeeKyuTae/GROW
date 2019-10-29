@@ -3,11 +3,13 @@ package grow.demo.account.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import grow.demo.account.domain.Account;
+import grow.demo.account.dto.AccountDto;
 import grow.demo.account.dto.AccountResource;
 import grow.demo.account.dto.KakaoAccessToken;
 import grow.demo.account.service.authorization.JwtService;
 import grow.demo.account.service.authorization.KakaoService;
 import grow.demo.account.service.user.AccountService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +33,7 @@ public class SignController {
     private AccountService accountService;
 
     @PostMapping("/oauth/login/kakao")
-    public ResponseEntity kakaoLogin(@RequestBody KakaoAccessToken kakaoAccess_token /*, HttpServletResponse response*/ ) {
+    public ResponseEntity kakaoLogin(@RequestBody KakaoAccessToken kakaoAccess_token /*, HttpServletResponse response*/ ) throws NotFoundException {
         // String access_token = kakaoService.getAccessToken(code);
         JsonNode userInfo = kakaoService.getUserInfo(kakaoAccess_token.getAccess_token());
         String kakaoId = userInfo.path("id").asText();
@@ -61,8 +63,8 @@ public class SignController {
         }
          */
         //JWT Toeken 발급
-        Account account = accountService.getAccountByKakaoID(kakaoId);
-        String jwtToken = jwtService.generateToken(account.getId());
+        AccountDto.AccountResponse response = accountService.getAccountByKakaoID(Long.valueOf(kakaoId));
+        String jwtToken = jwtService.generateToken(response.getAccountId());
         System.out.println("JWT: " + jwtToken);
         //   response.addHeader(HEADER_AUTH, jwtToken);
 
@@ -75,7 +77,6 @@ public class SignController {
         AccountResource accountResource = new AccountResource(account);
          */
         //Set Account Resource
-        AccountResource accountResource = new AccountResource(accountService.getAccountDto(account));
-        return ResponseEntity.ok().headers(responseHeaders).body(accountResource);
+        return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 }
