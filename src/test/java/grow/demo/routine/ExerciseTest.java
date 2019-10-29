@@ -25,12 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ExerciseTest extends BaseControllerTest {
 
     @Test
-    public void getEvent() throws Exception {
+    public void getExercise() throws Exception {
         //GIVEN
-        String exerciseId = "1";
+        ExerciseDto.ExerciseRequest request = ExerciseDto.ExerciseRequest.builder()
+                                                .exerciseId(Long.valueOf(1)).build();
 
         //WHEN
-        mockMvc.perform(get("/exercise/{exerciseId}", 1)
+        mockMvc.perform(get("/exercise")
+                .param("exerciseId", "1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaTypes.HAL_JSON))
                 .andDo(print())
@@ -52,7 +54,7 @@ public class ExerciseTest extends BaseControllerTest {
     }
 
     @Test
-    public void createEvent() throws Exception {
+    public void registerExercise() throws Exception {
         //GIVEN
         ExerciseDto.RegisterRequest request = ExerciseDto.RegisterRequest.builder()
                 .exerciseName("더블 펀치 어셈블")
@@ -100,4 +102,22 @@ public class ExerciseTest extends BaseControllerTest {
                         ));
     }
 
+    @Test
+    public void registerExistedExercise() throws Exception {
+        ExerciseDto.RegisterRequest request = ExerciseDto.RegisterRequest.builder()
+                .exerciseName("스쿼트")
+                .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Press, ExerciseMotion.Squat)))
+                .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Chest, ExercisePartial.Arm)))
+                .exerciseTool(ExerciseTool.Barbell)
+                .build()
+                ;
+
+        //WHEN
+        mockMvc.perform(post("/exercise")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
