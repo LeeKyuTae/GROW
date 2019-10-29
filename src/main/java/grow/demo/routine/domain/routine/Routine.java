@@ -61,4 +61,12 @@ public class Routine {
 
         return false;
     }
+
+    public boolean registerCategory(RoutineCategory routineCategory){
+        if(this.routineCategory != null) {
+           return false;
+        }
+        this.routineCategory = routineCategory;
+        return true;
+    }
 }
