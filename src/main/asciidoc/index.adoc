@@ -101,3 +101,38 @@ operation::create-routine[snippets='response-fields,curl-request,http-request,ht
 'GET' 요청을 사용해서 루틴 정보를 등록할 수 있다.
 
 operation::get-routine[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-add-exercise-routine]]
+=== 루틴에 운동 정보 등록하기
+
+'POST' 요청을 사용해서 운동 정보를 루틴에 등록할 수 있다.
+
+operation::add exercise to routine[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-get-routine-full-infromation]]
+=== 루틴 상세 정보 가져오기
+
+'GET' 요청을 사용해서 루틴에 대한 모든 정보를 가져온다.
+
+operation::get-routine-full-information[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-create-routine-category]]
+=== 운동 카테고리를 생성한다.
+
+'POST' 요청을 사용해서 루틴카테고리를 등록한다.
+
+operation::create-routine-category[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-add-routine-to-category]]
+=== 루틴 카테고리에 루틴을 등록한다.
+
+'POST' 요청을 사용해서 루틴카테고리에 루틴을 등록한다.
+
+operation::add routine to category[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-get-category-with-routines-info]]
+=== 루틴 카테고리 상세정보를 가져온다.
+
+'GET' 요청을 사용해서 루틴카테고리 정보를 가져온다.
+
+operation::get category with routines info[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']
