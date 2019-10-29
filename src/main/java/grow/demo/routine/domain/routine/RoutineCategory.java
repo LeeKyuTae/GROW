@@ -33,7 +33,7 @@ public class RoutineCategory {
     @OneToMany(mappedBy ="routineCategory", cascade = CascadeType.ALL)
     private List<Routine> routineList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "routineCategoryList")
+    @ManyToMany(mappedBy = "routineCategoryList", cascade = CascadeType.PERSIST)
     private List<Account> accountList = new ArrayList<>();
 
     @Override

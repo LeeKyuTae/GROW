@@ -10,12 +10,16 @@ import grow.demo.routine.service.RoutineCategoryService;
 import grow.demo.routine.service.RoutineService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
+import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 
 @AllArgsConstructor
@@ -28,7 +32,7 @@ public class RoutineCategoryController {
     private final JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity registerRoutineCategory(@RequestBody RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error){
+    public ResponseEntity registerRoutineCategory(@RequestBody RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error) throws NotFoundException {
         /*
         List<RoutineDto> routineList = routineCategoryDto.getRoutineList();
         if(routineList == null){
@@ -38,36 +42,40 @@ public class RoutineCategoryController {
                 routineService.registerRoutine(routineDto);
             }
         }
-
          */
-        RoutineCategoryType type = routineCategoryDto.getRoutineCategoryType();
+        RoutineCategoryType type = routineCategoryDto.getCategoryType();
         // 유저가 ADMIN이 아닌데 type이 RECOMMEND 일경우 -> BadRequest
 
 
 
-        RoutineCategoryDto.CategoryResponse response = routineCategoryService.registerRoutineCategory(routineCategoryDto);
-        return ResponseEntity.ok(response);
+        RoutineCategoryDto.CategoryResponse category = routineCategoryService.registerRoutineCategory(routineCategoryDto, 7L);
+        ControllerLinkBuilder selfLinkBuilder = linkTo(RoutineCategoryController.class).slash(category.getCategoryId());
+        URI createdUri = selfLinkBuilder.toUri();
+
+        List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getRoutineCategoryList(7L, category.getCategoryType());
+        return ResponseEntity.created(createdUri).body(response);
     }
 
-    @PostMapping("-routine")
-    public ResponseEntity addRoutineToCategory(@RequestBody RoutineCategoryDto.RoutineRequest routineRequest, Errors error) throws NotFoundException {
+    @PostMapping("/routine")
+    public ResponseEntity addRoutineToCategory(@RequestBody RoutineCategoryDto.RegisterRoutineRequest routineRequest, Errors error) throws NotFoundException {
         RoutineCategoryDto.CategoryResponse response = routineCategoryService.addRoutine(routineRequest);
-
-
+        if(error.hasErrors()){
+            return ResponseEntity.badRequest().body(error);
+        }
+        //RECOMMEND의 경우 ADMIN 유저만, CUSTOM의 경우 제작자만 추가할 수 있는 로직 필요
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity getRoutineCategory(@ModelAttribute RoutineCategoryDto.MyCategoryRequest request){
-        List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getAccountCategory(request, Long.valueOf(1));
-
-
+    public ResponseEntity getRoutineCategory(@ModelAttribute RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
+        RoutineCategoryDto.CategoryResponse response = routineCategoryService.responseByRoutineCategory(routineCategoryService.getCategory(request.getCategoryId()));
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity getRoutineCategory(@PathVariable Long categoryId) throws NotFoundException {
-        RoutineCategoryDto.CategoryResponse response = routineCategoryService.getCategory(categoryId);
+    @GetMapping("/routines")
+    public ResponseEntity getRoutineCategoryWithRoutine(@ModelAttribute RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
+        RoutineCategoryDto.FullCategoryResponse response = routineCategoryService.getCategoryWithRoutineInfo(request.getCategoryId());
         return ResponseEntity.ok(response);
     }
 }
+

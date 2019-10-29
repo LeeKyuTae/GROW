@@ -4,8 +4,18 @@ package grow.demo.routine.dto;
 import grow.demo.routine.domain.routine.RoutineCategoryType;
 import lombok.*;
 
+import java.util.List;
+
 
 public class RoutineCategoryDto {
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class CategoryRequest{
+        private Long categoryId;
+    }
+
 
     @Getter
     @Builder
@@ -13,7 +23,7 @@ public class RoutineCategoryDto {
     public static class MyCategoryRequest {
 
         //user ID
-        private RoutineCategoryType routineCategoryType;
+        private RoutineCategoryType categoryType;
     }
 
     @Getter
@@ -24,7 +34,7 @@ public class RoutineCategoryDto {
 
         private Long categoryId;
 
-        private RoutineCategoryType routineCategoryType;
+        private RoutineCategoryType categoryType;
 
         private String categoryName;
     }
@@ -33,7 +43,7 @@ public class RoutineCategoryDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
-        private RoutineCategoryType routineCategoryType;
+        private RoutineCategoryType categoryType;
 
         private String categoryName;
     }
@@ -41,10 +51,23 @@ public class RoutineCategoryDto {
     @Getter
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
-    public static class RoutineRequest {
+    public static class RegisterRoutineRequest {
         private Long categoryId;
 
         private Long routineId;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class FullCategoryResponse{
+        private Long categoryId;
+
+        private RoutineCategoryType categoryType;
+
+        private String categoryName;
+
+        private List<RoutineDto.RoutineInfoResponse> routineList;
     }
 
 
