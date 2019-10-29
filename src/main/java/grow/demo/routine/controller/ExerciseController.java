@@ -42,14 +42,14 @@ public class ExerciseController {
 
     }
 
-    @GetMapping
+    @GetMapping("-collection")
     public ResponseEntity getExercises(@RequestParam String exerciseName, Errors errors){
         List<ExerciseDto.ExerciseResponse> responseList = exerciseService.getExerciseList("%" + exerciseName + "%");
         return ResponseEntity.ok(responseList);
     }
 
     @GetMapping("/{exerciseId}")
-    public ResponseEntity getExercise(@PathVariable Long exerciseId, Errors errors){
+    public ResponseEntity getExercise(@PathVariable Long exerciseId){
         ExerciseDto.ExerciseResponse response = exerciseService.getExercise(exerciseId);
         return ResponseEntity.ok(response);
     }

@@ -79,4 +79,25 @@ include::
 
 'POST' 요청을 사용해서 운동 정보를 등록할 수 있다.
 
-operation::create-exercise[snippets='response-fields,curlrequest,http-request,http-response,request-body,response-body,response-fields']
+operation::create-exercise[snippets='response-fields,curl-request,http-request,http-response,request-body,response-body,response-fields']
+
+[[resources-exercise-get]]
+=== 운동 정보 가져오기
+
+'GET' 요청을 사용해서 운동 정보를 가져올 수 있다.
+
+operation::get-exercise[snippets='curl-request,response-body,response-fields']
+
+[[resources-routine-create]]
+=== 루틴 기본 정보 생성
+
+'POST' 요청을 사용해서 루틴 정보를 등록할 수 있다.
+
+operation::create-routine[snippets='response-fields,curl-request,http-request,http-response,request-body,response-body,response-fields']
+
+[[resources-routine-get]]
+=== 루틴 정보 가져오기
+
+'GET' 요청을 사용해서 루틴 정보를 등록할 수 있다.
+
+operation::get-routine[snippets='curl-request,http-request,request-body,http-response,response-body,response-fields']

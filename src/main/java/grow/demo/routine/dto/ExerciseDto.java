@@ -6,6 +6,8 @@ import grow.demo.routine.domain.exercise.ExercisePartial;
 import grow.demo.routine.domain.exercise.ExerciseTool;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -15,6 +17,14 @@ public class ExerciseDto {
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineExerciseRequest {
         private Long routineId;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class RoutineExerciseResponse {
+
+        private List<ExerciseResponse> exerciseResponseList = new ArrayList<>();
     }
 
     @Getter

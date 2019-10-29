@@ -42,7 +42,7 @@ public class RoutineService {
     }
 
     public RoutineDto.RoutineInfoResponse getRoutine(RoutineDto.RoutineInfoRequest request) throws NotFoundException {
-        Routine routine = routineRepository.findById(request.getRoutine_id()).orElseThrow(() -> new NotFoundException("존재하지 않는 루틴입니다."));
+        Routine routine = routineRepository.findById(request.getRoutineId()).orElseThrow(() -> new NotFoundException("존재하지 않는 루틴입니다."));
         return ResponseByRoutine(routine);
     }
 

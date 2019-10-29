@@ -6,9 +6,14 @@ import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.service.RoutineService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 
 @AllArgsConstructor
@@ -20,7 +25,9 @@ public class RoutineController {
     @PostMapping
     public ResponseEntity registerRoutine(@RequestBody RoutineDto.RegisterRequest request, Errors errors){
         RoutineDto.RoutineInfoResponse response = routineService.registerRoutine(request);
-        return ResponseEntity.ok(response);
+        ControllerLinkBuilder selfLinkBuilder = linkTo(RoutineController.class).slash(response.getRoutineId());
+        URI createdUri = selfLinkBuilder.toUri();
+        return ResponseEntity.created(createdUri).body(response);
     }
 
     @GetMapping

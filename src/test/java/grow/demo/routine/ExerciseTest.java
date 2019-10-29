@@ -17,11 +17,39 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ExerciseTest extends BaseControllerTest {
+
+    @Test
+    public void getEvent() throws Exception {
+        //GIVEN
+        String exerciseId = "1";
+
+        //WHEN
+        mockMvc.perform(get("/exercise/{exerciseId}", 1)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaTypes.HAL_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("exerciseId").exists())
+                .andExpect(jsonPath("exerciseName").exists())
+                .andExpect(jsonPath("exercisePartials").exists())
+                .andExpect(jsonPath("exerciseMotions").exists())
+                .andExpect(jsonPath("exerciseTool").exists())
+                .andDo(document("get-exercise",
+                        responseFields(
+                                fieldWithPath("exerciseId").description("운동 고유 번호"),
+                                fieldWithPath("exerciseName").description("운동명"),
+                                fieldWithPath("exercisePartials").description("운동 적용 부위"),
+                                fieldWithPath("exerciseMotions").description("운동 사용 동작"),
+                                fieldWithPath("exerciseTool").description("운동 사용 기구")
+                        )
+                ));
+    }
 
     @Test
     public void createEvent() throws Exception {
@@ -70,13 +98,6 @@ public class ExerciseTest extends BaseControllerTest {
                                 fieldWithPath("exerciseTool").description("운동 사용 기구")
                         )
                         ));
-
-
-
-
-
-
-
-        //THEN
     }
+
 }

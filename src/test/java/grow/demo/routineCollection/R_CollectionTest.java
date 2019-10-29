@@ -50,7 +50,7 @@ public class R_CollectionTest {
 
     @Test
     public void createExercise() {
-        /*
+
         ExerciseDto.RegisterRequest exerciseDto = ExerciseDto.RegisterRequest.builder()
                                     .exerciseName("벤치 프레스")
                                     .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Press)))
@@ -78,7 +78,7 @@ public class R_CollectionTest {
                 ;
         exerciseService.registerExercise(exerciseDto3);
 
-         */
+
     }
 
     @Test

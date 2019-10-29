@@ -26,7 +26,7 @@ public class RoutineDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineInfoRequest {
-        private Long routine_id;
+        private Long routineId;
     }
 
     @Getter
