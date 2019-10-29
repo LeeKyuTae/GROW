@@ -2,6 +2,10 @@ package grow.demo.routineCollection;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import grow.demo.account.domain.Account;
+import grow.demo.account.dto.AccountDto;
+import grow.demo.account.repository.AccountRepository;
+import grow.demo.account.service.user.AccountService;
 import grow.demo.routine.domain.exercise.ExerciseMotion;
 import grow.demo.routine.domain.exercise.ExercisePartial;
 import grow.demo.routine.domain.exercise.ExerciseTool;
@@ -48,6 +52,22 @@ public class R_CollectionTest {
     @Autowired
     private RoutineCategoryService routineCategoryService;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountService accountService;
+
+
+    //TEST 5
+    @Test
+    public void createTestUser(){
+        Account account = Account.builder().userName("tester1").userEmail("qwe@test.com").birth("1995-04-03").gender("MALE").height(188F).weight(69.5F).kakaoId(9999999L).build();
+        account = accountRepository.save(account);
+    }
+
+
+    //TEST 1.
     @Test
     public void createExercise() {
 
@@ -80,6 +100,7 @@ public class R_CollectionTest {
 
 
     }
+
 
     @Test
     public void createRoutine() throws NotFoundException {
@@ -130,15 +151,21 @@ public class R_CollectionTest {
          */
     }
 
+    //TEST 2
     @Test
     public void createCategory() throws NotFoundException, SQLException {
         RoutineCategoryDto.RegisterRequest registerRequest = RoutineCategoryDto.RegisterRequest.builder()
                                                                             .categoryName("명준이거말해봐")
-                                                                            .routineCategoryType(RoutineCategoryType.RECOMMEND)
+                                                                            .categoryType(RoutineCategoryType.RECOMMEND)
                                                                             .build()
                                                                             ;
-        routineCategoryService.registerRoutineCategory(registerRequest);
+        Long accountId = 7L;
+        routineCategoryService.registerRoutineCategory(registerRequest, accountId);
+    }
 
 
+    @Test
+    public void addCategoryToAccount() throws Exception {
+        accountService.addCategoryToAccount(Long.valueOf(7), Long.valueOf(4));
     }
 }
