@@ -6,6 +6,7 @@ import grow.demo.routine.domain.exercise.ExercisePartial;
 import grow.demo.routine.domain.exercise.ExerciseTool;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +17,18 @@ public class ExerciseDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineExerciseRequest {
+
+        @NotEmpty
         private Long routineId;
+    }
+
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class ExerciseRequest{
+        @NotEmpty
+        private Long exerciseId;
     }
 
     @Getter
@@ -31,7 +43,9 @@ public class ExerciseDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class ExerciseResponse {
+
         private Long exerciseId;
+
 
         private String exerciseName;
 
@@ -48,8 +62,12 @@ public class ExerciseDto {
     public static class RegisterRequest {
 
         private String exerciseName;
+
+
         private Set<ExercisePartial> exercisePartials;
+
         private Set<ExerciseMotion> exerciseMotions;
+
         private ExerciseTool exerciseTool;
     }
 
