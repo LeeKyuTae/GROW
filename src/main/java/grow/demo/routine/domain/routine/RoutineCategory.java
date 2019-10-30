@@ -30,7 +30,7 @@ public class RoutineCategory {
     @Column(name = "category_type")
     private RoutineCategoryType categoryType;
 
-    @OneToMany(mappedBy ="routineCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="routineCategory", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Routine> routineList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "routineCategoryList", cascade = CascadeType.PERSIST)

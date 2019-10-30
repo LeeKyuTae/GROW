@@ -54,7 +54,7 @@ public class Account {
     private Long kakaoId;
 
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<SetInfo> setInfos = new ArrayList<>();
 
 

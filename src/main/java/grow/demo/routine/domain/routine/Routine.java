@@ -31,6 +31,9 @@ public class Routine {
     @JoinColumn(name = "category_id")
     private RoutineCategory routineCategory;
 
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<SetInfo> setInfos = new ArrayList<>();
+    
     @ManyToMany
     @JoinTable(name = "routine_exercise",
                 joinColumns = @JoinColumn(name = "routine_id"),
