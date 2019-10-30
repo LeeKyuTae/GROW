@@ -40,17 +40,23 @@ public class AccountService {
             throw new ExistUserException();
         }
         account = accountRepository.save(account);
-        AddRecommendCategory(account.getId());
+        addRecommendCategory(account.getId());
         return ResponseByAccount(account);
     }
 
-    public void AddRecommendCategory(Long accountId)throws NotFoundException {
+    public void addRecommendCategory(Long accountId)throws NotFoundException {
         Account account = accountRepository.findByKakaoId(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
         List<RoutineCategory> categoryList = account.getRoutineCategoryList();
         List<RoutineCategory> recommendedCategoryList = categoryService.getRecommendedCategory();
         for(RoutineCategory routineCategory : recommendedCategoryList){
             categoryList.add(routineCategory);
         }
+    }
+
+    public AccountDto.AccountResponse empowerAdminToAccount(Long accountId)throws NotFoundException {
+        Account account = accountRepository.findByKakaoId(accountId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        account.empowerAdminRole();
+        return ResponseByAccount(account);
     }
 
     public AccountDto.AccountResponse updateAccountInfo(AccountDto.AccountInfoUpdateRequest request, Long accountId) throws NotFoundException {
@@ -64,11 +70,26 @@ public class AccountService {
         account.updateWeight(request);
         return ResponseByAccount(account);
     }
+    public Boolean isExistAccount(Long kakaoId){
+        if(accountRepository.existsAccountByKakaoId(kakaoId) == false){
+            return false;
+        }
+        return  true;
+    }
 
 
-    public AccountDto.AccountResponse getAccountByKakaoID(Long kakaoId) throws NotFoundException {
+    public AccountDto.SignInResponse getAccountByKakaoID(Long kakaoId) throws NotFoundException {
         Account account = accountRepository.findByKakaoId(kakaoId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
-        return ResponseByAccount(account);
+        AccountDto.SignInResponse response = AccountDto.SignInResponse.builder()
+                                                                .accountId(account.getId())
+                                                                .birth(account.getBirth())
+                                                                .gender(account.getGender())
+                                                                .height(account.getHeight())
+                                                                .userEmail(account.getUserEmail())
+                                                                .userName(account.getUserName())
+                                                                .weight(account.getWeight())
+                                                                .build();
+        return response;
     }
 
     public AccountDto.AccountFullResponse addCategoryToAccount(Long accountId, Long categoryId) throws NotFoundException {

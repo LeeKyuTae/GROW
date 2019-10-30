@@ -9,15 +9,21 @@ import grow.demo.account.dto.KakaoAccessToken;
 import grow.demo.account.service.authorization.JwtService;
 import grow.demo.account.service.authorization.KakaoService;
 import grow.demo.account.service.user.AccountService;
+import grow.demo.routine.controller.ExerciseController;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 
 @AllArgsConstructor
@@ -26,57 +32,42 @@ import org.springframework.web.bind.annotation.RestController;
 public class SignController {
     private static final String  HEADER_AUTH = "Authorization" ;
 
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    private KakaoService kakaoService;
+    private final KakaoService kakaoService;
 
-    private AccountService accountService;
+    private final AccountService accountService;
 
     @PostMapping("/oauth/login/kakao")
     public ResponseEntity kakaoLogin(@RequestBody KakaoAccessToken kakaoAccess_token /*, HttpServletResponse response*/ ) throws NotFoundException {
         // String access_token = kakaoService.getAccessToken(code);
         JsonNode userInfo = kakaoService.getUserInfo(kakaoAccess_token.getAccess_token());
-        String kakaoId = userInfo.path("id").asText();
-        System.out.println("kakaoId: " + kakaoId);
-        //String email = userInfo.get("email").toString();
+        String id = userInfo.path("id").asText();
+        Long kakaoId = Long.valueOf(id);
+
+        //Response Body
+        Boolean isSignIn = true;
+
         // 존재하지 않는 아이디일 경우 DB 저장
-        /*
-        if (accountService.IsExistAccountFromKakao(kakaoId) == false) {
-            // 데이터 최대한 넣은 후 create
-            JsonNode properties = userInfo.path("properties");
-            JsonNode kakao_account = userInfo.path("kakao_account");
-
-            String nickName = properties.path("nickname").asText();
-            String email = kakao_account.path("email").asText();
-            String gender = kakao_account.path("gender").asText();
-
-            System.out.println("nickName: " + nickName);
-            System.out.println("email: " + email);
-            System.out.println("gender: " + gender);
-
-            AccountDto accountDto = AccountDto.builder().email(email)
-                    .gender(gender).kakaoId(Long.parseLong(kakaoId)).nickName(nickName).build();
-
-            System.out.println("SUCCESS MAKE ACCOUNTDTO");
-            accountService.createAccount(accountDto);
-            System.out.println("SUCCESS CREATE ACCOUNT");
+        if(accountService.isExistAccount(kakaoId) == false){
+            accountService.registerAccountByKakao(kakaoId);
+            isSignIn = false;
         }
-         */
-        //JWT Toeken 발급
-        AccountDto.AccountResponse response = accountService.getAccountByKakaoID(Long.valueOf(kakaoId));
-        String jwtToken = jwtService.generateToken(response.getAccountId());
-        System.out.println("JWT: " + jwtToken);
-        //   response.addHeader(HEADER_AUTH, jwtToken);
+        AccountDto.SignInResponse response = accountService.getAccountByKakaoID(Long.valueOf(kakaoId));
+        response.setIsSignIn(isSignIn);
 
+        //JWT Toeken 발급
+        String jwtToken = jwtService.generateToken(response.getAccountId());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(HEADER_AUTH, jwtToken);
 
-        /*
-        // kakaoAccess_token.setJwt(jwtToken);
-        Account account = accountService.getAccount(kakaoId);
-        AccountResource accountResource = new AccountResource(account);
-         */
         //Set Account Resource
+        if(isSignIn == false){
+            ControllerLinkBuilder selfLinkBuilder = linkTo("/account/").slash(response.getAccountId());
+            URI createdUri = selfLinkBuilder.toUri();
+            return ResponseEntity.created(createdUri).body(response);
+        }
+
         return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 }

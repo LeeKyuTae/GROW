@@ -39,6 +39,20 @@ public class AccountDto {
     @Getter
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class SignInResponse{
+        private Boolean isSignIn;
+        private Long accountId;
+        private String userEmail;
+        private String userName;
+        private Float weight;
+        private Float height;
+        private String gender;
+        private String birth;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
     public static class AccountFullResponse{
         private Long accountId;
         private String userEmail;
