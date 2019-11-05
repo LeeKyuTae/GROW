@@ -33,7 +33,7 @@ public class Routine {
 
     @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<SetInfo> setInfos = new ArrayList<>();
-    
+
     @ManyToMany
     @JoinTable(name = "routine_exercise",
                 joinColumns = @JoinColumn(name = "routine_id"),
@@ -63,6 +63,11 @@ public class Routine {
             return true;
 
         return false;
+    }
+
+    public void generateExerciseList(){
+        this.exerciseList = new ArrayList<>();
+        return;
     }
 
     public boolean registerCategory(RoutineCategory routineCategory){
