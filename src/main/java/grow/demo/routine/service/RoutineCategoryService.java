@@ -57,8 +57,10 @@ public class RoutineCategoryService {
                                                     ;
         routineCategory = routineCategoryRepository.save(routineCategory);
         List<RoutineCategory> categoryList = account.getRoutineCategoryList();
-        if(categoryList == null)
+        if(categoryList == null) {
             categoryList = new ArrayList<>();
+            account.registerCategoryList(categoryList);
+        }
         categoryList.add(routineCategory);
         return responseByRoutineCategory(routineCategory);
     }

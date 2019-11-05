@@ -72,8 +72,8 @@ public class RoutineService {
         Exercise exercise = exerciseRepository.findById(routineDto.getExerciseId()).orElseThrow(() -> new NotExistExerciseException());
         List<Exercise> exerciseList = routine.getExerciseList();
         if(exerciseList == null) {
-            exerciseList = new ArrayList<>();
-            routine.builder().exerciseList(exerciseList).build();
+            routine.generateExerciseList();
+            exerciseList = routine.getExerciseList();
         }
         else if(exerciseList.contains(exercise)){
             throw new ExistExerciseException(exercise.getExerciseName(), routine.getRoutineName());
