@@ -87,8 +87,8 @@ public class RoutineTest extends BaseControllerTest {
     public void addExerciseToRoutine() throws Exception {
         //GIVEN
         RoutineDto.ExerciseRequest request = RoutineDto.ExerciseRequest.builder()
-                                                                .exerciseId(Long.valueOf("3"))
-                                                                .routineId(Long.valueOf("5"))
+                                                                .exerciseId(Long.valueOf("2"))
+                                                                .routineId(Long.valueOf("22"))
                                                                 .build();
 
         mockMvc.perform(post("/routine/exercise")

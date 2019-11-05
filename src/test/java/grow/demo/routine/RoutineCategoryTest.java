@@ -30,6 +30,7 @@ public class RoutineCategoryTest extends BaseControllerTest {
                                                                             .categoryType(RoutineCategoryType.CUSTOM)
                                                                             .build();
 
+
         //WHEN
         mockMvc.perform(post("/category")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
