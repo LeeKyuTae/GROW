@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.List;
@@ -32,7 +33,7 @@ public class RoutineCategoryController {
     private final JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity registerRoutineCategory(@RequestBody RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error) throws NotFoundException {
+    public ResponseEntity registerRoutineCategory(@RequestBody @Valid RoutineCategoryDto.RegisterRequest routineCategoryDto, Errors error) throws NotFoundException {
         /*
         List<RoutineDto> routineList = routineCategoryDto.getRoutineList();
         if(routineList == null){
@@ -57,7 +58,7 @@ public class RoutineCategoryController {
     }
 
     @PostMapping("/routine")
-    public ResponseEntity addRoutineToCategory(@RequestBody RoutineCategoryDto.RegisterRoutineRequest routineRequest, Errors error) throws NotFoundException {
+    public ResponseEntity addRoutineToCategory(@RequestBody @Valid RoutineCategoryDto.RegisterRoutineRequest routineRequest, Errors error) throws NotFoundException {
         RoutineCategoryDto.CategoryResponse response = routineCategoryService.addRoutine(routineRequest);
         if(error.hasErrors()){
             return ResponseEntity.badRequest().body(error);
@@ -67,13 +68,13 @@ public class RoutineCategoryController {
     }
 
     @GetMapping
-    public ResponseEntity getRoutineCategory(@ModelAttribute RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
+    public ResponseEntity getRoutineCategory(@ModelAttribute @Valid RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
         RoutineCategoryDto.CategoryResponse response = routineCategoryService.responseByRoutineCategory(routineCategoryService.getCategory(request.getCategoryId()));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/routines")
-    public ResponseEntity getRoutineCategoryWithRoutine(@ModelAttribute RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
+    public ResponseEntity getRoutineCategoryWithRoutine(@ModelAttribute @Valid RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
         RoutineCategoryDto.FullCategoryResponse response = routineCategoryService.getCategoryWithRoutineInfo(request.getCategoryId());
         return ResponseEntity.ok(response);
     }

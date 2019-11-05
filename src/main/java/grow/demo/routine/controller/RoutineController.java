@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -23,7 +24,11 @@ public class RoutineController {
     private final RoutineService routineService;
 
     @PostMapping
-    public ResponseEntity registerRoutine(@RequestBody RoutineDto.RegisterRequest request, Errors errors) throws NotFoundException {
+    public ResponseEntity registerRoutine(@RequestBody @Valid RoutineDto.RegisterRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         RoutineDto.RoutineInfoResponse routineApply = routineService.registerRoutine(request.getRoutineName(), request.getCategoryId());
         ControllerLinkBuilder selfLinkBuilder = linkTo(RoutineController.class).slash(routineApply.getRoutineId());
         URI createdUri = selfLinkBuilder.toUri();
@@ -33,25 +38,41 @@ public class RoutineController {
     }
 
     @GetMapping
-    public ResponseEntity getRoutineInfo(@ModelAttribute RoutineDto.RoutineInfoRequest request, Errors errors) throws NotFoundException {
+    public ResponseEntity getRoutineInfo(@ModelAttribute @Valid RoutineDto.RoutineInfoRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         RoutineDto.RoutineInfoResponse response = routineService.getRoutine(request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/category")
-    public ResponseEntity getRoutineListInfo(@ModelAttribute RoutineDto.RoutineListInfoRequest request, Errors errors) throws NotFoundException {
+    public ResponseEntity getRoutineListInfo(@ModelAttribute @Valid RoutineDto.RoutineListInfoRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         RoutineDto.RoutineListInfoResponse response = routineService.getRoutineByCategory(request.getCategory_id());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/exercise")
-    public ResponseEntity addExerciseToRoutine(@RequestBody RoutineDto.ExerciseRequest request, Errors errors) throws NotFoundException {
+    public ResponseEntity addExerciseToRoutine(@RequestBody @Valid RoutineDto.ExerciseRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         RoutineDto.RoutineInfoResponse response = routineService.addExercise(request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/exercise-list")
-    public ResponseEntity getFullInfoToRoutine(@ModelAttribute RoutineDto.RoutineInfoRequest request, Errors errors) throws NotFoundException {
+    public ResponseEntity getFullInfoToRoutine(@ModelAttribute @Valid RoutineDto.RoutineInfoRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         RoutineDto.FullInfoResponse response = routineService.getFullInfoRoutine(request.getRoutineId());
         return ResponseEntity.ok(response);
     }

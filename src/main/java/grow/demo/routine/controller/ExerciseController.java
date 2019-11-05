@@ -31,20 +31,32 @@ public class ExerciseController {
 
     @PostMapping
     public ResponseEntity registerExercise(@RequestBody @Valid ExerciseDto.RegisterRequest request, Errors errors){
-            ExerciseDto.ExerciseResponse response = exerciseService.registerExercise(request);
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
+        ExerciseDto.ExerciseResponse response = exerciseService.registerExercise(request);
             ControllerLinkBuilder selfLinkBuilder = linkTo(ExerciseController.class).slash(response.getExerciseId());
             URI createdUri = selfLinkBuilder.toUri();
             return ResponseEntity.created(createdUri).body(response);
     }
 
     @GetMapping("/collection")
-    public ResponseEntity getExercises(@RequestParam String exerciseName, Errors errors){
+    public ResponseEntity getExercises(@RequestParam @Valid String exerciseName, Errors errors){
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         List<ExerciseDto.ExerciseResponse> responseList = exerciseService.getExerciseList("%" + exerciseName + "%");
         return ResponseEntity.ok(responseList);
     }
 
     @GetMapping
-    public ResponseEntity getExercise(@ModelAttribute ExerciseDto.ExerciseRequest request, Errors errors){
+    public ResponseEntity getExercise(@ModelAttribute @Valid ExerciseDto.ExerciseRequest request, Errors errors){
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         ExerciseDto.ExerciseResponse response = exerciseService.getExercise(request.getExerciseId());
         return ResponseEntity.ok(response);
     }
