@@ -8,5 +8,5 @@ import java.util.List;
 public interface RoutineSetRepository extends JpaRepository<SetInfo, Long> {
 
     public List<SetInfo> findAllByAccount_IdAndRoutine_RoutineIdAndExercise_ExerciseId(Long account_id, Long routine_id, Long exercise_id);
-    public List<SetInfo> findAllByAccount_IdAndRoutine_RoutineI(Long account_id, Long routine_id);
+    public List<SetInfo> findAllByAccount_IdAndRoutine_RoutineId(Long account_id, Long routine_id);
 }
