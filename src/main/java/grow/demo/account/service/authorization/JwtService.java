@@ -1,8 +1,10 @@
 package grow.demo.account.service.authorization;
 
 
+import grow.demo.account.repository.AccountRepository;
 import grow.demo.config.UnauthorizedException;
 import io.jsonwebtoken.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,12 @@ import java.util.Date;
 @Slf4j
 @Service
 public class JwtService {
+
+    public JwtService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
+
+    private final AccountRepository accountRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
@@ -103,7 +111,10 @@ public class JwtService {
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token)
                     .getBody();
-            return Long.parseLong(claims.getSubject());
+
+            Long accountId = Long.parseLong(claims.getSubject());
+            accountRepository.findById(accountId).orElseThrow(()-> new UnauthorizedException());
+            return accountId;
         } catch (Exception e) {
             if(log.isInfoEnabled()){
                 e.printStackTrace();
