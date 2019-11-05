@@ -4,6 +4,8 @@ package grow.demo.routine.dto;
 import grow.demo.routine.domain.routine.RoutineCategoryType;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -13,6 +15,7 @@ public class RoutineCategoryDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class CategoryRequest{
+        @NotBlank
         private Long categoryId;
     }
 
@@ -23,6 +26,8 @@ public class RoutineCategoryDto {
     public static class MyCategoryRequest {
 
         //user ID
+
+        @NotNull
         private RoutineCategoryType categoryType;
     }
 
@@ -43,8 +48,10 @@ public class RoutineCategoryDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
+        @NotNull
         private RoutineCategoryType categoryType;
 
+        @NotNull
         private String categoryName;
     }
 
@@ -52,8 +59,10 @@ public class RoutineCategoryDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRoutineRequest {
+        @NotNull
         private Long categoryId;
 
+        @NotNull
         private Long routineId;
     }
 
