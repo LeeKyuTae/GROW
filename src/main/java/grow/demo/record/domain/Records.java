@@ -3,11 +3,13 @@ package grow.demo.record.domain;
 
 import grow.demo.account.domain.Account;
 import grow.demo.routine.domain.exercise.Exercise;
+import grow.demo.routine.domain.routine.Routine;
 import grow.demo.routine.domain.routine.SetInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,6 +27,8 @@ public class Records {
     @Column(name = "record_id")
     private Long id;
 
+    @Column(updatable = false)
+    @CreationTimestamp
     private LocalDate exerciseDate;
 
     private Float userWeight;
@@ -45,7 +49,5 @@ public class Records {
     @ManyToOne
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
-
-
 
 }
