@@ -4,6 +4,9 @@ package grow.demo.account.dto;
 import grow.demo.routine.dto.RoutineCategoryDto;
 import lombok.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -33,7 +36,8 @@ public class AccountDto {
         private Float weight;
         private Float height;
         private String gender;
-        private String birth;
+        private Integer age;
+       // private String birth;
     }
 
     @Getter
@@ -41,13 +45,7 @@ public class AccountDto {
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class SignInResponse{
         private Boolean isSignIn;
-        private Long accountId;
-        private String userEmail;
-        private String userName;
-        private Float weight;
-        private Float height;
-        private String gender;
-        private String birth;
+        private String jwt;
     }
 
     @Getter
@@ -60,7 +58,8 @@ public class AccountDto {
         private Float weight;
         private Float height;
         private String gender;
-        private String birth;
+        private Integer age;
+        //private String birth;
         private List<RoutineCategoryDto.CategoryResponse> routineCollectionList;
     }
 
@@ -68,11 +67,25 @@ public class AccountDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class AccountInfoUpdateRequest{
+
         private String userEmail;
+
+        @NotBlank
         private String userName;
+
+        @Min(value = 1)
         private Float weight;
+
+        @Min(value = 1)
         private Float height;
+
+        @Min(value = 1)
+        private Integer age;
+
+        @NotBlank
         private String gender;
+
+
         private String birth;
     }
 
@@ -80,6 +93,7 @@ public class AccountDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class WeightUpdateRequest{
+        @Min(value = 1)
         private Float weight;
     }
 

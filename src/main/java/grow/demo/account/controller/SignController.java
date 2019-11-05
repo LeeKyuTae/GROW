@@ -2,24 +2,17 @@ package grow.demo.account.controller;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-import grow.demo.account.domain.Account;
 import grow.demo.account.dto.AccountDto;
-import grow.demo.account.dto.AccountResource;
 import grow.demo.account.dto.KakaoAccessToken;
 import grow.demo.account.service.authorization.JwtService;
 import grow.demo.account.service.authorization.KakaoService;
 import grow.demo.account.service.user.AccountService;
-import grow.demo.routine.controller.ExerciseController;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -38,8 +31,14 @@ public class SignController {
 
     private final AccountService accountService;
 
+    @GetMapping("/test")
+    public ResponseEntity test() {
+        return ResponseEntity.ok("test");
+    }
+
     @PostMapping("/oauth/login/kakao")
     public ResponseEntity kakaoLogin(@RequestBody KakaoAccessToken kakaoAccess_token /*, HttpServletResponse response*/ ) throws NotFoundException {
+        System.out.println(kakaoAccess_token.getAccess_token());
         // String access_token = kakaoService.getAccessToken(code);
         JsonNode userInfo = kakaoService.getUserInfo(kakaoAccess_token.getAccess_token());
         String id = userInfo.path("id").asText();
@@ -53,21 +52,24 @@ public class SignController {
             accountService.registerAccountByKakao(kakaoId);
             isSignIn = false;
         }
-        AccountDto.SignInResponse response = accountService.getAccountByKakaoID(Long.valueOf(kakaoId));
-        response.setIsSignIn(isSignIn);
+        AccountDto.AccountResponse accountInfos = accountService.getAccountByKakaoID(Long.valueOf(kakaoId));
+        AccountDto.SignInResponse response = AccountDto.SignInResponse.builder()
+                                                                .isSignIn(isSignIn)
+                                                                .build();
 
         //JWT Toeken 발급
-        String jwtToken = jwtService.generateToken(response.getAccountId());
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(HEADER_AUTH, jwtToken);
+        String jwtToken = jwtService.generateToken(accountInfos.getAccountId());
+        response.setJwt(jwtToken);
+        //HttpHeaders responseHeaders = new HttpHeaders();
+        //responseHeaders.set(HEADER_AUTH, jwtToken);
 
         //Set Account Resource
         if(isSignIn == false){
-            ControllerLinkBuilder selfLinkBuilder = linkTo("/account/").slash(response.getAccountId());
+            ControllerLinkBuilder selfLinkBuilder = linkTo(AccountController.class).slash(accountInfos.getAccountId());
             URI createdUri = selfLinkBuilder.toUri();
+          //  return ResponseEntity.created(createdUri).headers(responseHeaders).body(accountInfos);
             return ResponseEntity.created(createdUri).body(response);
         }
-
-        return ResponseEntity.ok().headers(responseHeaders).body(response);
+        return ResponseEntity.ok().body(response);
     }
 }

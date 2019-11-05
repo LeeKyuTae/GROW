@@ -23,8 +23,12 @@ public class AccountController {
 
     private final JwtService jwtService;
 
-    @PostMapping
-    public ResponseEntity updateAccountInfo(@ModelAttribute @Valid AccountDto.AccountInfoUpdateRequest request, Errors errors) throws NotFoundException {
+    @PutMapping
+    public ResponseEntity updateAccountInfo(@RequestBody @Valid AccountDto.AccountInfoUpdateRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         Long accountId = jwtService.getAccountId();
         // validate request info
 
@@ -32,8 +36,12 @@ public class AccountController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
-    public ResponseEntity updateWeightInfo(@ModelAttribute @Valid AccountDto.WeightUpdateRequest request, Errors errors) throws NotFoundException {
+    @PutMapping("/weight")
+    public ResponseEntity updateWeightInfo(@RequestBody @Valid AccountDto.WeightUpdateRequest request, Errors errors) throws NotFoundException {
+        if(errors.hasErrors()){
+            ResponseEntity.badRequest().body(errors);
+        }
+
         Long accountId = jwtService.getAccountId();
         // validate request info
 
@@ -48,4 +56,11 @@ public class AccountController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping
+    public ResponseEntity getAccountInfo() throws NotFoundException {
+        Long accountId = jwtService.getAccountId();
+        Account account = accountService.getAccount(accountId);
+        AccountDto.AccountResponse response = accountService.ResponseByAccount(account);
+        return ResponseEntity.ok(response);
+    }
 }

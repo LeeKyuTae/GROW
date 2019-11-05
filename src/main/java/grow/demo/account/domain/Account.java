@@ -3,6 +3,7 @@ package grow.demo.account.domain;
 
 import grow.demo.account.dto.AccountDto;
 import grow.demo.account.exception.ExistRoleException;
+import grow.demo.record.domain.Records;
 import grow.demo.routine.domain.routine.SetInfo;
 import grow.demo.routine.domain.routine.RoutineCategory;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,9 @@ public class Account {
     @Column(name = "account_gender")
     private String gender;
 
+    @Column(name = "account_age")
+    private Integer age;
+
     @Column(name = "account_birth")
     private String birth;
 
@@ -57,6 +61,8 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<SetInfo> setInfos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
+    private List<Records> recordsList = new ArrayList<>();
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -72,6 +78,14 @@ public class Account {
         this.weight = request.getWeight();
         this.userEmail = request.getUserEmail();
         this.userName = request.getUserName();
+    }
+
+    public void registerCategoryList(List<RoutineCategory> categories){
+        if(this.routineCategoryList == null)
+            this.routineCategoryList = new ArrayList<>();
+
+        for(RoutineCategory category : categories)
+            this.routineCategoryList.add(category);
     }
 
     public void updateWeight(AccountDto.WeightUpdateRequest request){

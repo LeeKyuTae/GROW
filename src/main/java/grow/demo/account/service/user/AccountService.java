@@ -45,11 +45,17 @@ public class AccountService {
     }
 
     public void addRecommendCategory(Long accountId)throws NotFoundException {
-        Account account = accountRepository.findByKakaoId(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
         List<RoutineCategory> categoryList = account.getRoutineCategoryList();
+        if(categoryList == null)
+            categoryList = new ArrayList<>();
+
         List<RoutineCategory> recommendedCategoryList = categoryService.getRecommendedCategory();
-        for(RoutineCategory routineCategory : recommendedCategoryList){
-            categoryList.add(routineCategory);
+        if(recommendedCategoryList != null) {
+            for (RoutineCategory routineCategory : recommendedCategoryList) {
+                categoryList.add(routineCategory);
+            }
+            account.registerCategoryList(categoryList);
         }
     }
 
@@ -71,18 +77,18 @@ public class AccountService {
         return ResponseByAccount(account);
     }
     public Boolean isExistAccount(Long kakaoId){
-        if(accountRepository.existsAccountByKakaoId(kakaoId) == false){
+        if(accountRepository.existsAccountByKakaoId(kakaoId).equals(false)){
             return false;
         }
         return  true;
     }
 
 
-    public AccountDto.SignInResponse getAccountByKakaoID(Long kakaoId) throws NotFoundException {
+    public AccountDto.AccountResponse getAccountByKakaoID(Long kakaoId) throws NotFoundException {
         Account account = accountRepository.findByKakaoId(kakaoId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
-        AccountDto.SignInResponse response = AccountDto.SignInResponse.builder()
+        AccountDto.AccountResponse response = AccountDto.AccountResponse.builder()
                                                                 .accountId(account.getId())
-                                                                .birth(account.getBirth())
+                                                                .age(account.getAge())
                                                                 .gender(account.getGender())
                                                                 .height(account.getHeight())
                                                                 .userEmail(account.getUserEmail())
