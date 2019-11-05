@@ -3,6 +3,9 @@ package grow.demo.routine.dto;
 import grow.demo.routine.domain.exercise.Exercise;
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +18,12 @@ public class SetInfoDto {
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class SetInfoRequest {
 
-        //userId
+        private Long accountId;
 
+        @NotBlank
         private Long routineId;
 
+        @NotBlank
         private Long exerciseId;
     }
 
@@ -58,16 +63,22 @@ public class SetInfoDto {
 
         private Long accountId;
 
+        @NotNull @Min(value = 1)
         private Integer setNumber;
 
+        @NotNull @Min(value = 1)
         private Integer reps;
 
+        @NotNull @Min(value = 1)
         private Float weight;
 
+        @NotNull
         private Integer restTime;
 
+        @NotNull
         private Long routineId;
 
+        @NotNull
         private Long exerciseId;
 
     }
@@ -76,12 +87,16 @@ public class SetInfoDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class UpdateRequest {
+        @NotNull
         private Long setId;
 
+        @NotNull @Min(value = 1)
         private Integer reps;
 
+        @NotNull @Min(value = 1)
         private Float weight;
 
+        @NotNull
         private Integer restTime;
     }
 
@@ -103,6 +118,17 @@ public class SetInfoDto {
         private Integer restTime;
 
         private Long routineId;
+
+        private Long exerciseId;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class DeleteResponse{
+        private Long routineId;
+
+        private Long accountId;
 
         private Long exerciseId;
     }

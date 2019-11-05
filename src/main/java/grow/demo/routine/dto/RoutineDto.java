@@ -3,6 +3,8 @@ package grow.demo.routine.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -12,6 +14,7 @@ public class RoutineDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineListInfoRequest {
+        @NotBlank
         private Long category_id;
     }
 
@@ -26,6 +29,7 @@ public class RoutineDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineInfoRequest {
+        @NotNull
         private Long routineId;
     }
 
@@ -33,6 +37,7 @@ public class RoutineDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RoutineInfoResponse {
+
         private Long routineId;
         private String routineName;
     }
@@ -41,8 +46,10 @@ public class RoutineDto {
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
 
+        @NotNull
         private Long categoryId;
 
+        @NotBlank
         private String routineName;
     }
 
@@ -50,8 +57,10 @@ public class RoutineDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class ExerciseRequest {
+        @NotNull
         private Long routineId;
 
+        @NotNull
         private Long exerciseId;
     }
 
