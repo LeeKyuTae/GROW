@@ -1,8 +1,10 @@
 package grow.demo.account.service.authorization;
 
 
+import grow.demo.account.repository.AccountRepository;
 import grow.demo.config.UnauthorizedException;
 import io.jsonwebtoken.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,25 +23,48 @@ import java.util.Date;
 @Service
 public class JwtService {
 
+    public JwtService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
+
+    private final AccountRepository accountRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;
 
     @Value("${app.jwtExpirationInMs}")
-    private int jwtExpirationInMs;
+    private long jwtExpirationInMs;
 
-    public String generateToken(String kakaoId){
+
+    @Value("${app.jwtWebExpirationInMs}")
+    private long jwtWebExpirationInMs;
+
+    public String generateToken(Long accountId){
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
-                .setSubject(kakaoId)
+                .setSubject(String.valueOf(accountId))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
+    public String generateWebToken(Long accountId){
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtWebExpirationInMs);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(accountId))
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
 
     /*
     public Long getUserIdFromJWT(String token) {
@@ -103,7 +128,11 @@ public class JwtService {
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token)
                     .getBody();
-            return Long.parseLong(claims.getSubject());
+
+            Long accountId = Long.parseLong(claims.getSubject());
+            System.out.println("accountID: " + claims.getSubject());
+            accountRepository.findById(accountId).orElseThrow(()-> new UnauthorizedException());
+            return accountId;
         } catch (Exception e) {
             if(log.isInfoEnabled()){
                 e.printStackTrace();

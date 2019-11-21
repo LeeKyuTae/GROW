@@ -1,7 +1,7 @@
 package grow.demo.routine.domain.exercise;
 
 public enum ExerciseTool {
-    Dumbbell, Barbell, cable ,machine, noTool
+    dumbbell, barbell, cable , machine, no_tool, assisted, kettlebell, band
 }
 /*
 Dumbbell : 덤벨
