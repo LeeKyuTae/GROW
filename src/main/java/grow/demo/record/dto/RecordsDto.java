@@ -3,6 +3,7 @@ package grow.demo.record.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class RecordsDto {
 
@@ -23,7 +24,7 @@ public class RecordsDto {
     public static class RecordResponse{
         private Long recordId;
 
-        private LocalDate exerciseDate;
+        private LocalDateTime exerciseDate;
 
         private Float userWeight;
 
@@ -34,6 +35,15 @@ public class RecordsDto {
         private Float toolWeight;
 
         private Integer restTime;
+    }
+
+    @Getter
+    @Builder
+    @Setter @AllArgsConstructor @NoArgsConstructor
+    public static class ExerciseResponse{
+        private Long exerciseId;
+
+        private String exerciseName;
     }
 
 }

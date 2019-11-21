@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +30,9 @@ public class Records {
 
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDate exerciseDate;
+    private LocalDateTime exerciseDate;
 
     private Float userWeight;
-
 
     private Integer setNumber;
 
@@ -49,5 +49,9 @@ public class Records {
     @ManyToOne
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
+
+    @ManyToOne
+    @JoinColumn(name = "routine_id")
+    private Routine routine;
 
 }

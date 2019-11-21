@@ -1,7 +1,7 @@
 package grow.demo.routine.domain.exercise;
 
 public enum ExercisePartial {
-    Sholder, Chest, Back, Leg, Abs, Arm
+    chest, back, sholder,   leg, arm, abs,  core
 }
 
 /*

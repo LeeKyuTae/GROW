@@ -11,6 +11,7 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(produces = MediaTypes.HAL_JSON_UTF8_VALUE)
+@RequestMapping//(produces = MediaTypes.HAL_JSON_UTF8_VALUE)
 public class SignController {
     private static final String  HEADER_AUTH = "Authorization" ;
 
@@ -59,6 +60,8 @@ public class SignController {
 
         //JWT Toeken 발급
         String jwtToken = jwtService.generateToken(accountInfos.getAccountId());
+        System.out.println(jwtToken);
+
         response.setJwt(jwtToken);
         //HttpHeaders responseHeaders = new HttpHeaders();
         //responseHeaders.set(HEADER_AUTH, jwtToken);
@@ -71,5 +74,47 @@ public class SignController {
             return ResponseEntity.created(createdUri).body(response);
         }
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/oauth/login/kakao/web")
+    public ResponseEntity kakaoLoginbyWeb(@RequestBody KakaoAccessToken kakaoAccess_token /*, HttpServletResponse response*/ ) throws NotFoundException {
+        System.out.println(kakaoAccess_token.getAccess_token());
+        // String access_token = kakaoService.getAccessToken(code);
+        JsonNode userInfo = kakaoService.getUserInfo(kakaoAccess_token.getAccess_token());
+        String id = userInfo.path("id").asText();
+        Long kakaoId = Long.valueOf(id);
+
+        //Response Body
+        Boolean isSignIn = true;
+
+        // 존재하지 않는 아이디일 경우 refuse
+        if(accountService.isExistAccount(kakaoId) == false){
+            accountService.registerAccountByKakao(kakaoId);
+            isSignIn = false;
+           // return ResponseEntity.badRequest().body("웹에서는 회원가입을 할 수 없습니다.");
+        }
+        AccountDto.AccountResponse accountInfos = accountService.getAccountByKakaoID(Long.valueOf(kakaoId));
+        AccountDto.SignInResponse response = AccountDto.SignInResponse.builder()
+                .isSignIn(isSignIn)
+                .build();
+
+        //JWT Toeken 발급
+        String jwtToken = jwtService.generateWebToken(accountInfos.getAccountId());
+        System.out.println(jwtToken);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(HEADER_AUTH, jwtToken);
+
+        response.setJwt(jwtToken);
+        //HttpHeaders responseHeaders = new HttpHeaders();
+        //responseHeaders.set(HEADER_AUTH, jwtToken);
+
+        //Set Account Resource
+        if(isSignIn == false){
+            ControllerLinkBuilder selfLinkBuilder = linkTo(AccountController.class).slash(accountInfos.getAccountId());
+            URI createdUri = selfLinkBuilder.toUri();
+            //  return ResponseEntity.created(createdUri).headers(responseHeaders).body(accountInfos);
+            return ResponseEntity.created(createdUri).headers(responseHeaders).body(response);
+        }
+        return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 }

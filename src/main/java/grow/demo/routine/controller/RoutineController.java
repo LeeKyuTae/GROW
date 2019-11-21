@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -33,8 +34,9 @@ public class RoutineController {
         ControllerLinkBuilder selfLinkBuilder = linkTo(RoutineController.class).slash(routineApply.getRoutineId());
         URI createdUri = selfLinkBuilder.toUri();
 
-        RoutineDto.RoutineListInfoResponse response = routineService.getRoutineByCategory(request.getCategoryId());
-        return ResponseEntity.created(createdUri).body(response);
+       // List<RoutineDto.RoutineInfoResponse> response = routineService.getRoutineByCategory(request.getCategoryId());
+        //RoutineDto.RoutineListInfoResponse response = routineService.getRoutineByCategory(request.getCategoryId());
+        return ResponseEntity.created(createdUri).body(routineApply);
     }
 
     @GetMapping
@@ -52,8 +54,9 @@ public class RoutineController {
         if(errors.hasErrors()){
             ResponseEntity.badRequest().body(errors);
         }
+        List<RoutineDto.RoutineInfoResponse> response = routineService.getRoutineByCategory(request.getCategory_id());
 
-        RoutineDto.RoutineListInfoResponse response = routineService.getRoutineByCategory(request.getCategory_id());
+      //  RoutineDto.RoutineListInfoResponse response = routineService.getRoutineByCategory(request.getCategory_id());
         return ResponseEntity.ok(response);
     }
 

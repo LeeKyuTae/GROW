@@ -25,6 +25,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ExerciseTest extends BaseControllerTest {
 
     @Test
+    public void getAllExerciseList() throws  Exception{
+        mockMvc.perform(get("/exercise/all")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaTypes.HAL_JSON))
+                .andDo(print());
+    }
+
+
+
+    @Test
     public void getExercise() throws Exception {
         //GIVEN
         ExerciseDto.ExerciseRequest request = ExerciseDto.ExerciseRequest.builder()
@@ -58,9 +68,9 @@ public class ExerciseTest extends BaseControllerTest {
         //GIVEN
         ExerciseDto.RegisterRequest request = ExerciseDto.RegisterRequest.builder()
                 .exerciseName("더블 펀치 어셈블")
-                .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Press, ExerciseMotion.Squat)))
-                .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Chest, ExercisePartial.Arm)))
-                .exerciseTool(ExerciseTool.Barbell)
+                .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.press, ExerciseMotion.squat)))
+                .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.chest, ExercisePartial.arm)))
+                .exerciseTool(ExerciseTool.barbell)
                 .build()
                 ;
 
@@ -106,9 +116,9 @@ public class ExerciseTest extends BaseControllerTest {
     public void registerExistedExercise() throws Exception {
         ExerciseDto.RegisterRequest request = ExerciseDto.RegisterRequest.builder()
                 .exerciseName("스쿼트")
-                .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.Press, ExerciseMotion.Squat)))
-                .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.Chest, ExercisePartial.Arm)))
-                .exerciseTool(ExerciseTool.Barbell)
+                .exerciseMotions(new HashSet<>(Arrays.asList(ExerciseMotion.press, ExerciseMotion.squat)))
+                .exercisePartials(new HashSet<>(Arrays.asList(ExercisePartial.chest, ExercisePartial.arm)))
+                .exerciseTool(ExerciseTool.barbell)
                 .build()
                 ;
 

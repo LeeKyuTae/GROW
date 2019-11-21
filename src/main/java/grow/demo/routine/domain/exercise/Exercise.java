@@ -41,7 +41,7 @@ public class Exercise {
 
 
     @ManyToMany(mappedBy = "exerciseList")
-    private List<Routine> routineList = new ArrayList<>();
+    private List<Routine> routineList ;
 
 
     @Override

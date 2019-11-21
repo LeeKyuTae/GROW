@@ -51,6 +51,12 @@ public class ExerciseController {
         return ResponseEntity.ok(responseList);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity getExercises(){
+        List<ExerciseDto.ExerciseResponse> responseList = exerciseService.getAllExerciseList();
+        return ResponseEntity.ok(responseList);
+    }
+
     @GetMapping
     public ResponseEntity getExercise(@ModelAttribute @Valid ExerciseDto.ExerciseRequest request, Errors errors){
         if(errors.hasErrors()){

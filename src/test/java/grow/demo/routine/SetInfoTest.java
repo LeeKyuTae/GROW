@@ -16,7 +16,6 @@ public class SetInfoTest extends BaseControllerTest {
     public void registerSetInfo() throws Exception {
         //GIVEN
         SetInfoDto.RegisterRequest request =  SetInfoDto.RegisterRequest.builder()
-                                                        .accountId(Long.valueOf(7))
                                                         .routineId(Long.valueOf(20))
                                                         .exerciseId(Long.valueOf(3))
                                                         .reps(5)

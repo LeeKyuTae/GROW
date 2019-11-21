@@ -131,8 +131,19 @@ public class AccountService {
     }
 
     public Account getAccount(Long accountId) throws NotFoundException {
-        Account account = accountRepository.findByKakaoId(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
         return account;
+    }
+
+    public void deleteAccount(Long accountId) throws NotFoundException {
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
+        List<RoutineCategory> routineCategories = account.getRoutineCategoryList();
+        for(RoutineCategory category : routineCategories){
+            if(!category.getCategoryType().equals(RoutineCategoryType.RECOMMEND))
+                categoryService.deleteCateogry(category);
+        }
+        accountRepository.deleteById(accountId);
+        return;
     }
 
 

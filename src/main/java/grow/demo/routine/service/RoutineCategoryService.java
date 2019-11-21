@@ -4,11 +4,14 @@ package grow.demo.routine.service;
 import grow.demo.account.domain.Account;
 import grow.demo.account.dto.AccountDto;
 import grow.demo.account.repository.AccountRepository;
+import grow.demo.account.service.authorization.JwtService;
 import grow.demo.account.service.user.AccountService;
 import grow.demo.routine.domain.routine.Routine;
 import grow.demo.routine.domain.routine.RoutineCategory;
 import grow.demo.routine.domain.routine.RoutineCategoryType;
+import grow.demo.routine.domain.routine.RoutineImage;
 import grow.demo.routine.dto.RoutineCategoryDto;
+import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.exception.ExistRoutineException;
 import grow.demo.routine.exception.NotModifyCategoryException;
 import grow.demo.routine.repository.RoutineCategoryRepository;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -34,10 +38,14 @@ public class RoutineCategoryService {
 
     private final AccountRepository accountRepository;
 
+    private final JwtService jwtService;
+
     private final ModelMapper modelMapper;
 
     public List<RoutineCategoryDto.CategoryResponse> getRoutineCategoryList(Long accountId, RoutineCategoryType type) throws NotFoundException {
         Account account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
+        List<RoutineCategory> testList = account.getRoutineCategoryList();
+
         List<RoutineCategory> categoryList = account.getRoutineCategoryList().stream()
                                                                 .filter(routineCategory -> routineCategory.getCategoryType().equals(type))
                                                                 .collect(Collectors.toList());
@@ -63,6 +71,16 @@ public class RoutineCategoryService {
         }
         categoryList.add(routineCategory);
         return responseByRoutineCategory(routineCategory);
+    }
+
+    public void registerRecommendCategory(RoutineCategoryDto.RegisterRequest routineCategoryDto, Long accountId) throws NotFoundException {
+        List<Account> accountList = accountRepository.findAll();
+        for(Account account : accountList){
+            if(account.getId().equals(accountId)){
+                continue;
+            }
+            registerRoutineCategory(routineCategoryDto, accountId);
+        }
     }
 
     public RoutineCategory getCategory(Long categoryId) throws NotFoundException {
@@ -100,21 +118,44 @@ public class RoutineCategoryService {
     }
 
 
-    public RoutineCategoryDto.FullCategoryResponse getCategoryWithRoutineInfo(Long categoryId) throws NotFoundException {
+    public List<RoutineDto.RoutineInfoResponse> getCategoryWithRoutineInfo(Long categoryId) throws NotFoundException {
         RoutineCategory category = routineCategoryRepository.findById(categoryId).orElseThrow(() -> new NotFoundException("존재하지 않는 카테고리 입니다."));
 
+        List<RoutineDto.RoutineInfoResponse> response = category.getRoutineList().stream().map(routineValue -> routineService.ResponseByRoutine(routineValue))
+                                                                                                        .collect(Collectors.toList());
+
+
+
+
+                /*
         RoutineCategoryDto.FullCategoryResponse response = RoutineCategoryDto.FullCategoryResponse.builder()
-                                                                                        .categoryId(category.getCategoryId())
-                                                                                        .categoryName(category.getCategoryName())
-                                                                                        .categoryType(category.getCategoryType())
-                                                                                        .routineList(category.getRoutineList().stream().map(routine -> routineService.ResponseByRoutine(routine))
-                                                                                                                                        .collect(Collectors.toList()))
+                                                                                        //.categoryId(category.getCategoryId())
+                                                                                        //.categoryName(category.getCategoryName())
+                                                                                        //.categoryType(category.getCategoryType())
+                                                                                        .routineList(category.getRoutineList().stream()
+                                                                                                                        .map(routine -> routineService.ResponseByRoutine(routine))
+                                                                                                                        .collect(Collectors.toList()))
                                                                                         .build();
+
+                 */
         return response;
     }
 
-    public RoutineCategoryDto.CategoryResponse responseByRoutineCategory(RoutineCategory routineCategory){
+    public void deleteCateogry(RoutineCategory category){
+        routineCategoryRepository.delete(category);
+    }
+
+    public RoutineCategoryDto.CategoryResponse responseByRoutineCategory(RoutineCategory routineCategory)  {
         RoutineCategoryDto.CategoryResponse categoryResponse = modelMapper.map(routineCategory, RoutineCategoryDto.CategoryResponse.class);
+
+        Optional<Account> accountOptional = accountRepository.findById(jwtService.getAccountId());
+        String gender = "male";
+        if(accountOptional.isPresent()){
+            Account account = accountOptional.get();
+            gender = account.getGender();
+        }
+        categoryResponse.setImageUrl(RoutineImage.getImageUrl(routineCategory.getCategoryId(), gender));
         return categoryResponse;
     }
+
 }

@@ -1,5 +1,6 @@
 package grow.demo.routine;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import grow.demo.common.BaseControllerTest;
 import grow.demo.routine.dto.RoutineDto;
 import org.junit.Test;
@@ -17,6 +18,84 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RoutineTest extends BaseControllerTest {
+    public static String jwtToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MiIsImlhdCI6MTU3Mzk4MTg1MSwiZXhwIjoxNTc3MTM1NDUxfQ.d4zgGSTLEVls0CSG_xFaRtM267nTtn9OEpUBzbUqd3ITjnhgCttuTVXlszZY0tDbq3_7yEjb-DbPFGZnwNN92g";
+
+    @Test
+    public void makeCowRoutine() throws Exception {
+        RoutineDto.RegisterRequest day1 = RoutineDto.RegisterRequest.builder()
+                .routineName("Day 1")
+                .categoryId(Long.valueOf(89))
+                .build();
+
+        RoutineDto.RegisterRequest day2 = RoutineDto.RegisterRequest.builder()
+                .routineName("Day 2")
+                .categoryId(Long.valueOf(89))
+                .build();
+
+        RoutineDto.RegisterRequest day3 = RoutineDto.RegisterRequest.builder()
+                .routineName("Day 3")
+                .categoryId(Long.valueOf(89))
+                .build();
+
+        mockMvc.perform(post("/routine")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("authorization", jwtToken)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(day1))
+        );
+
+        mockMvc.perform(post("/routine")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("authorization", jwtToken)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(day2))
+        );
+
+        mockMvc.perform(post("/routine")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("authorization", jwtToken)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(day3))
+        );
+    }
+
+    @Test
+    public void addExerciseToCowRoutine() throws Exception {
+        doexerciseToRoutine(141L,96L); // 스쿼트
+        doexerciseToRoutine(119L,96L); // 벤치 프레스
+        doexerciseToRoutine(195L,96L); // 바벨 로우
+        doexerciseToRoutine(141L,97L); // 바벨 스쿼트
+        doexerciseToRoutine(102L,97L); // 오버헤드 프레스
+        doexerciseToRoutine(159L,97L); // 데드리프트
+        doexerciseToRoutine(141L,98L); // 스쿼트
+        doexerciseToRoutine(119L,98L); // 벤치 프레스
+        doexerciseToRoutine(195L,98L); // 바벨 로우
+    }
+
+
+    @Test
+    public void addExerciseToCowRoutine123() throws Exception {
+        doexerciseToRoutine(195L,384L); // 스쿼트
+
+        doexerciseToRoutine(195L,384L); // 스쿼트
+        doexerciseToRoutine(195L,384L); // 스쿼트
+        doexerciseToRoutine(195L,384L); // 스쿼트
+    }
+
+    public void doexerciseToRoutine(Long exerciseId, Long routineId) throws Exception {
+        RoutineDto.ExerciseRequest request = RoutineDto.ExerciseRequest.builder()
+                .exerciseId(exerciseId)
+                .routineId(routineId)
+                .build();
+
+        mockMvc.perform(post("/routine/exercise")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("authorization", jwtToken)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        );
+    }
+
 
     @Test
     public void getRoutine() throws Exception {

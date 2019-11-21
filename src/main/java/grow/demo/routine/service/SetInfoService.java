@@ -36,8 +36,8 @@ public class SetInfoService {
 
     private final ModelMapper modelMapper;
 
-    public SetInfoDto.RegisterResponse registerSetInfo(SetInfoDto.RegisterRequest request) throws NotFoundException {
-        Account  account = accountRepository.findById(request.getAccountId()).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
+    public SetInfoDto.RegisterResponse registerSetInfo(SetInfoDto.RegisterRequest request, Long accountId) throws NotFoundException {
+        Account  account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("존재하지 않는 유저입니다."));
         Exercise exercise = exerciseRepository.findById(request.getExerciseId()).orElseThrow(()-> new NotFoundException("존재하지 않는 운동입니다."));
         Routine routine = routineRepository.findById(request.getRoutineId()).orElseThrow(()-> new NotFoundException("존재하지 않는 루틴입니다."));
         isContainData(account,routine,exercise);
@@ -49,6 +49,7 @@ public class SetInfoService {
                                 .account(account)
                                 .exercise(exercise)
                                 .routine(routine)
+                                .weight(request.getWeight())
                                 .build();
 
         setInfo = routineSetRepository.save(setInfo);
@@ -63,7 +64,7 @@ public class SetInfoService {
             throw new NotFoundException("해당 루틴은 유저정보와 매칭되지 않는 정보입니다.");
         }
 
-        List<Exercise> checkExerciseList = routine.getExerciseList();
+        List<Exercise> checkExerciseList = routine.getExerciseList().stream().collect(Collectors.toList());
         if(checkExerciseList.contains(exercise) == false){
             throw new NotFoundException("해당 운동은 루틴정보와 매칭되지 않는 정보입니다.");
         }
@@ -95,11 +96,10 @@ public class SetInfoService {
        return responseBySetInfo(setInfo);
    }
 
-   public SetInfoDto.SetInfoResponse deleteSetInfo(Long setId) throws NotFoundException {
+   public SetInfoDto.SetInfoResponse deleteSetInfo(Long setId, Long accountId) throws NotFoundException {
        SetInfo setInfo = routineSetRepository.findById(setId).orElseThrow(() -> new NotFoundException("존재하지 않는 세트입니다."));
        Integer deletedSetNum = setInfo.getSetNumber();
        SetInfoDto.SetInfoRequest request = SetInfoDto.SetInfoRequest.builder()
-                                                        .accountId(setInfo.getAccount().getId())
                                                         .exerciseId(setInfo.getExercise().getExerciseId())
                                                         .routineId(setInfo.getRoutine().getRoutineId())
                                                         .build();
@@ -110,7 +110,7 @@ public class SetInfoService {
                                             .map(info -> info.reduceSetNumber())
                                             .collect(Collectors.toList());
 
-       return getSetInfoCollection(request.getAccountId(), request.getRoutineId(), request.getExerciseId());
+       return getSetInfoCollection(accountId, request.getRoutineId(), request.getExerciseId());
    }
 
 

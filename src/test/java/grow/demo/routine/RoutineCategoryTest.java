@@ -21,6 +21,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RoutineCategoryTest extends BaseControllerTest {
 
+    public static String jwtToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxOTgiLCJpYXQiOjE1NzQwMDU3NzAsImV4cCI6MTU3NzE1OTM3MH0.SnK4EtRuIVoA0Xmf5DtH2YlvIpkjDNYMs59CH2LQIUMrG6lqSoGJ6aZEhoBlyACi4nlWDy-EU5GkTpPfGhVUBQ";
+//Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MiIsImlhdCI6MTU3Mzk4MTg1MSwiZXhwIjoxNTc3MTM1NDUxfQ.d4zgGSTLEVls0CSG_xFaRtM267nTtn9OEpUBzbUqd3ITjnhgCttuTVXlszZY0tDbq3_7yEjb-DbPFGZnwNN92g
+//public static String jwtToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MiIsImlhdCI6MTU3Mzk4MTg1MSwiZXhwIjoxNTc3MTM1NDUxfQ.d4zgGSTLEVls0CSG_xFaRtM267nTtn9OEpUBzbUqd3ITjnhgCttuTVXlszZY0tDbq3_7yEjb-DbPFGZnwNN92g";
+//public static String jwtToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4OCIsImlhdCI6MTU3MzkxMjIwMSwiZXhwIjoxNTc3MDY1ODAxfQ.hQqpJ7ZGM9_41vIMc18PDgt0ysmsvw0tqBqM2F0FyAEem4i1c2PlL5b7fZMKowHnVjVrwkgqkJ_6XThlX8McIQ";
+
+
+    @Test
+    public void addMadCowCategory() throws Exception {
+        RoutineCategoryDto.RegisterRequest request = RoutineCategoryDto.RegisterRequest.builder()
+                                                                        .categoryName("명준 워크아웃테스트")
+                                                                        .categoryType(RoutineCategoryType.CUSTOM)
+                                                                        .build();
+
+        mockMvc.perform(post("/category")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("authorization", jwtToken)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        );
+    }
+
+
+
+
+
     //TEST 4
     @Test
     public void registerCategory() throws Exception {
@@ -140,6 +165,26 @@ public class RoutineCategoryTest extends BaseControllerTest {
                                 fieldWithPath("routineList[].routineName").description("루틴 이름")
                         )
                 ));
+    }
+
+    @Test
+    public void getRoutineCategoryByType() throws Exception {
+        mockMvc.perform(get("/category/all")
+                       .param("categoryType", String.valueOf(RoutineCategoryType.CUSTOM))
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaTypes.HAL_JSON)
+                        .header("authorization", jwtToken)
+                     //   .header("authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4OCIsImlhdCI6MTU3MzkxMjIwMSwiZXhwIjoxNTc3MDY1ODAxfQ.hQqpJ7ZGM9_41vIMc18PDgt0ysmsvw0tqBqM2F0FyAEem4i1c2PlL5b7fZMKowHnVjVrwkgqkJ_6XThlX8McIQ")
+                        )
+                .andDo(print())
+                .andDo(document("get categoryList by categoryType",
+                        responseFields(
+                                fieldWithPath("[].categoryId").description("카테고리 고유번호"),
+                                fieldWithPath("[].categoryType").description("카테고리 타입"),
+                                fieldWithPath("[].categoryName").description("카테고리 이름"),
+                                fieldWithPath("[].imageUrl").description("카테고리 사진 정보")
+                        )
+                        ));
     }
 
 }

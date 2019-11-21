@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
-    public List<Exercise> findByExerciseNameLike(String exerciseName);
+    public List<Exercise> findAllByExerciseNameLike(String exerciseName);
 
     public Boolean existsByExerciseName(String exerciseName);
+
+    public Exercise findByExerciseName(String name);
 }

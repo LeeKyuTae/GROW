@@ -18,12 +18,10 @@ public class SetInfoDto {
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class SetInfoRequest {
 
-        private Long accountId;
-
-        @NotBlank
+        @NotNull
         private Long routineId;
 
-        @NotBlank
+        @NotNull
         private Long exerciseId;
     }
 
@@ -61,15 +59,13 @@ public class SetInfoDto {
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class RegisterRequest {
 
-        private Long accountId;
-
         @NotNull @Min(value = 1)
         private Integer setNumber;
 
         @NotNull @Min(value = 1)
         private Integer reps;
 
-        @NotNull @Min(value = 1)
+        @NotNull @Min(value = 0)
         private Float weight;
 
         @NotNull

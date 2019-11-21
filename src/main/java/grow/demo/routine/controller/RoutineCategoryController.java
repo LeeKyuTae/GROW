@@ -6,6 +6,7 @@ import grow.demo.account.service.authorization.JwtService;
 import grow.demo.routine.domain.routine.RoutineCategory;
 import grow.demo.routine.domain.routine.RoutineCategoryType;
 import grow.demo.routine.dto.RoutineCategoryDto;
+import grow.demo.routine.dto.RoutineDto;
 import grow.demo.routine.service.RoutineCategoryService;
 import grow.demo.routine.service.RoutineService;
 import javassist.NotFoundException;
@@ -44,16 +45,21 @@ public class RoutineCategoryController {
             }
         }
          */
+
+        Long accountId = jwtService.getAccountId();
         RoutineCategoryType type = routineCategoryDto.getCategoryType();
         // 유저가 ADMIN이 아닌데 type이 RECOMMEND 일경우 -> BadRequest
 
 
+        //타입이 RECOMMEND 일 경우 모든 유저에게 해당 카테고리 추가해주기
+        if(type.equals(RoutineCategoryType.RECOMMEND)){
+            routineCategoryService.registerRecommendCategory(routineCategoryDto, accountId);
+        }
 
-        RoutineCategoryDto.CategoryResponse category = routineCategoryService.registerRoutineCategory(routineCategoryDto, 7L);
+        RoutineCategoryDto.CategoryResponse category = routineCategoryService.registerRoutineCategory(routineCategoryDto, accountId);
         ControllerLinkBuilder selfLinkBuilder = linkTo(RoutineCategoryController.class).slash(category.getCategoryId());
         URI createdUri = selfLinkBuilder.toUri();
-
-        List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getRoutineCategoryList(7L, category.getCategoryType());
+        List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getRoutineCategoryList(accountId, category.getCategoryType());
         return ResponseEntity.created(createdUri).body(response);
     }
 
@@ -67,15 +73,22 @@ public class RoutineCategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity getRoutineCategory(@ModelAttribute @Valid RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
-        RoutineCategoryDto.CategoryResponse response = routineCategoryService.responseByRoutineCategory(routineCategoryService.getCategory(request.getCategoryId()));
+    @GetMapping("/{id}")
+    public ResponseEntity getRoutineCategory(@PathVariable Long id) throws NotFoundException {
+        RoutineCategoryDto.CategoryResponse response = routineCategoryService.responseByRoutineCategory(routineCategoryService.getCategory(id));
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/all")
+    public ResponseEntity getRoutineCategoryByType(@ModelAttribute @Valid RoutineCategoryDto.MyCategoryRequest request) throws NotFoundException {
+        List<RoutineCategoryDto.CategoryResponse> response = routineCategoryService.getRoutineCategoryList(jwtService.getAccountId(), request.getCategoryType());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/routines")
     public ResponseEntity getRoutineCategoryWithRoutine(@ModelAttribute @Valid RoutineCategoryDto.CategoryRequest request) throws NotFoundException {
-        RoutineCategoryDto.FullCategoryResponse response = routineCategoryService.getCategoryWithRoutineInfo(request.getCategoryId());
+        List<RoutineDto.RoutineInfoResponse> response = routineCategoryService.getCategoryWithRoutineInfo(request.getCategoryId());
         return ResponseEntity.ok(response);
     }
 }

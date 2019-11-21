@@ -40,6 +40,7 @@ public class RoutineDto {
 
         private Long routineId;
         private String routineName;
+        private String imageUrl;
     }
     @Getter
     @Builder

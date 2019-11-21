@@ -1,7 +1,7 @@
 package grow.demo.routine.domain.exercise;
 
 public enum ExerciseMotion {
-    Press, Extension, Curl, Raise, Fly, PullDown, PressDown, Row, Shrug, Squat, Kick, Twist
+    press, extension, curl, raise, fly, pull_down, press_down, row, shrug, squat, kick, twist, pull
 }
 
 /*

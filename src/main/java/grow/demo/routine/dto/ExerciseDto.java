@@ -44,7 +44,7 @@ public class ExerciseDto {
     @Getter
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
-    public static class ExerciseResponse {
+    public static class ExerciseResponse implements Comparable<ExerciseResponse> {
 
         private Long exerciseId;
 
@@ -56,6 +56,17 @@ public class ExerciseDto {
         private Set<ExerciseMotion> exerciseMotions;
 
         private ExerciseTool exerciseTool;
+
+        @Override
+        public int compareTo(ExerciseResponse o) {
+            ExercisePartial thisPartial = this.exercisePartials.stream().findFirst().get();
+            ExercisePartial comParePartial = o.exercisePartials.stream().findFirst().get();
+            if(thisPartial.ordinal() > comParePartial.ordinal())
+                return 1;
+            else if(thisPartial.ordinal() < comParePartial.ordinal())
+                return -1;
+            return 0;
+        }
     }
 
     @Getter

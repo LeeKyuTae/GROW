@@ -37,6 +37,10 @@ public class JwtService {
     @Value("${app.jwtExpirationInMs}")
     private long jwtExpirationInMs;
 
+
+    @Value("${app.jwtWebExpirationInMs}")
+    private long jwtWebExpirationInMs;
+
     public String generateToken(Long accountId){
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
@@ -48,6 +52,19 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
+    public String generateWebToken(Long accountId){
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtWebExpirationInMs);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(accountId))
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
 
     /*
     public Long getUserIdFromJWT(String token) {
@@ -113,6 +130,7 @@ public class JwtService {
                     .getBody();
 
             Long accountId = Long.parseLong(claims.getSubject());
+            System.out.println("accountID: " + claims.getSubject());
             accountRepository.findById(accountId).orElseThrow(()-> new UnauthorizedException());
             return accountId;
         } catch (Exception e) {

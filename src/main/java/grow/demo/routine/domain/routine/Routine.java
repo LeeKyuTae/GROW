@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -34,11 +36,11 @@ public class Routine {
     @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<SetInfo> setInfos = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "routine_exercise",
                 joinColumns = @JoinColumn(name = "routine_id"),
                 inverseJoinColumns = @JoinColumn(name = "exercise_id"))
-    private List<Exercise> exerciseList = new ArrayList<>();
+    private Set<Exercise> exerciseList ;
 
 
     @Override
@@ -66,7 +68,7 @@ public class Routine {
     }
 
     public void generateExerciseList(){
-        this.exerciseList = new ArrayList<>();
+        this.exerciseList = new HashSet<>();
         return;
     }
 

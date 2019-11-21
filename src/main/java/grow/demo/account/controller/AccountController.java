@@ -7,6 +7,7 @@ import grow.demo.account.service.authorization.JwtService;
 import grow.demo.account.service.user.AccountService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +63,11 @@ public class AccountController {
         Account account = accountService.getAccount(accountId);
         AccountDto.AccountResponse response = accountService.ResponseByAccount(account);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/death/{accountId}")
+    public ResponseEntity deleteAccount(@PathVariable Long accountId) throws NotFoundException {
+        accountService.deleteAccount(accountId);
+        return ResponseEntity.ok("IS DELETED");
     }
 }

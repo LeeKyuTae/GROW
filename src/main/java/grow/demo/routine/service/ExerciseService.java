@@ -8,10 +8,13 @@ import grow.demo.routine.exception.NotExistExerciseException;
 import grow.demo.routine.repository.ExerciseRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Transactional
@@ -22,6 +25,7 @@ public class ExerciseService {
 
     private final ModelMapper modelMapper;
 
+    @CacheEvict(value = "allExercise")
     public ExerciseDto.ExerciseResponse registerExercise(ExerciseDto.RegisterRequest exerciseDto){
         Exercise exercise = Exercise.builder()
                                     .exerciseMotions(exerciseDto.getExerciseMotions())
@@ -40,7 +44,7 @@ public class ExerciseService {
     }
 
     public List<ExerciseDto.ExerciseResponse> getExerciseList(String exerciseNameLike){
-        List<Exercise> exerciseList = exerciseRepository.findByExerciseNameLike(exerciseNameLike);
+        List<Exercise> exerciseList = exerciseRepository.findAllByExerciseNameLike(exerciseNameLike);
         if(exerciseList == null){
             throw new NotExistExerciseException();
         }
@@ -49,6 +53,21 @@ public class ExerciseService {
             ExerciseDto.ExerciseResponse response = ResponseByExercise(exercise);
             responseList.add(response);
         }
+        return responseList;
+    }
+
+    @Cacheable(value = "allExercise")
+    public List<ExerciseDto.ExerciseResponse> getAllExerciseList(){
+        List<Exercise> exerciseList = exerciseRepository.findAll();
+        if(exerciseList == null){
+            throw new NotExistExerciseException();
+        }
+        List<ExerciseDto.ExerciseResponse> responseList = new ArrayList<>();
+        for(Exercise exercise : exerciseList){
+            ExerciseDto.ExerciseResponse response = ResponseByExercise(exercise);
+            responseList.add(response);
+        }
+        Collections.sort(responseList);
         return responseList;
     }
 

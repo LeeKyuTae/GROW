@@ -3,6 +3,7 @@ package grow.demo.account.domain;
 
 import grow.demo.account.dto.AccountDto;
 import grow.demo.account.exception.ExistRoleException;
+import grow.demo.record.domain.BestRecord;
 import grow.demo.record.domain.Records;
 import grow.demo.routine.domain.routine.SetInfo;
 import grow.demo.routine.domain.routine.RoutineCategory;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Getter
 @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class Account {
+public class Account  {
 
     @Id
     @GeneratedValue
@@ -58,11 +59,14 @@ public class Account {
     private Long kakaoId;
 
 
-    @OneToMany(mappedBy = "account", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<SetInfo> setInfos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = { CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private List<Records> recordsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account", cascade = { CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<BestRecord> bestRecordList = new ArrayList<>();
 
 
     @ManyToMany(fetch = FetchType.LAZY)

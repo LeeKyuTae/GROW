@@ -15,7 +15,7 @@ public class RoutineCategoryDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class CategoryRequest{
-        @NotBlank
+        @NotNull
         private Long categoryId;
     }
 
@@ -42,6 +42,8 @@ public class RoutineCategoryDto {
         private RoutineCategoryType categoryType;
 
         private String categoryName;
+
+        private String imageUrl;
     }
 
     @Getter
@@ -70,13 +72,13 @@ public class RoutineCategoryDto {
     @Builder
     @Setter @AllArgsConstructor @NoArgsConstructor
     public static class FullCategoryResponse{
-        private Long categoryId;
+       // private Long categoryId;
 
-        private RoutineCategoryType categoryType;
+      //  private RoutineCategoryType categoryType;
 
-        private String categoryName;
+      //  private String categoryName;
 
-        private List<RoutineDto.RoutineInfoResponse> routineList;
+        private RoutineDto.RoutineInfoResponse routine;
     }
 
 
